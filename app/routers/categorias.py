@@ -69,6 +69,7 @@ def eliminar_categoria(id: int, db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(status_code=500, detail="Error al eliminar categoría")
     
+    
 # Reactivar categoría (volver a estado activo)
 @router.put("/reactivar/{id}", response_model=CategoriaOut)
 def reactivar_categoria(id: int, db: Session = Depends(get_db)):
