@@ -52,3 +52,25 @@ def eliminar_usuario(usuario_id: int, db: Session = Depends(get_db)):
     usuario.estado = "inactivo"
     db.commit()
     return {"mensaje": "Usuario eliminado correctamente"}
+
+# Reactivar usuario (volver a estado activo)
+@router.put("/reactivar/{usuario_id}", response_model=UsuarioOut)
+def reactivar_usuario(usuario_id: int, db: Session = Depends(get_db)):
+    try:
+        usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+
+        if not usuario:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+        if usuario.estado == "activo":
+            raise HTTPException(status_code=400, detail="El usuario ya está activo")
+
+        usuario.estado = "activo"
+        db.commit()
+        db.refresh(usuario)
+        return usuario
+
+    except SQLAlchemyError:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al reactivar el usuario")
+
