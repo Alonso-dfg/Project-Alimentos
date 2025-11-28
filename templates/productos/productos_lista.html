@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="titulo">Lista de Productos</h2>
+
+<div class="productos-grid">
+    {% for producto in productos %}
+    <div class="producto-card">
+        {% if producto.imagen %}
+            <img src="/imagenes/{{ producto.imagen }}" alt="Imagen" class="producto-img">
+        {% else %}
+            <img src="/static/no-image.png" alt="Sin imagen" class="producto-img">
+        {% endif %}
+
+        <h3>{{ producto.nombre }}</h3>
+        <p><strong>Precio:</strong> {{ producto.precio }}</p>
+        <p><strong>Ciudad:</strong> {{ producto.ciudad }}</p>
+        <p><strong>Fuente:</strong> {{ producto.fuente }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

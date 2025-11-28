@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="titulo">Crear Producto</h2>
+
+<form action="/productos/" method="post" enctype="multipart/form-data" class="form-card">
+
+    <label>Nombre:</label>
+    <input type="text" name="nombre" required>
+
+    <label>Precio:</label>
+    <input type="number" step="0.01" name="precio" required>
+
+    <label>Ciudad:</label>
+    <input type="text" name="ciudad" required>
+
+    <label>Fuente:</label>
+    <input type="text" name="fuente" required>
+
+    <label>Categoría ID:</label>
+    <input type="number" name="categoria_id">
+
+    <label>Proveedor ID:</label>
+    <input type="number" name="proveedor_id">
+
+    <label>Usuario ID:</label>
+    <input type="number" name="usuario_id">
+
+    <label>Imagen:</label>
+    <input type="file" name="imagen">
+
+    <button type="submit" class="btn">Crear</button>
+</form>
+
+{% endblock %}

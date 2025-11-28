@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="titulo">Buscar Producto</h2>
+
+<form action="/producto-ver" method="get" class="form-card">
+    <label>ID del producto:</label>
+    <input type="number" name="id" required>
+    <button class="btn">Buscar</button>
+</form>
+
+{% endblock %}

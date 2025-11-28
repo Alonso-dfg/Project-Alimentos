@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="titulo">Gestión de Productos</h2>
+
+<div class="opciones-container">
+
+    <a href="/vista-productos" class="opcion-card">
+        <h3>📄 Ver todos los productos</h3>
+        <p>Muestra la lista completa de productos.</p>
+    </a>
+
+    <a href="/crear-producto" class="opcion-card">
+        <h3>➕ Crear producto</h3>
+        <p>Agrega un nuevo producto al sistema.</p>
+    </a>
+
+    <a href="/buscar-producto" class="opcion-card">
+        <h3>🔍 Buscar producto por ID</h3>
+        <p>Consulta un producto específico usando su ID.</p>
+    </a>
+
+    <a href="/actualizar-producto" class="opcion-card">
+        <h3>✏️ Actualizar producto</h3>
+        <p>Edita los datos de un producto existente.</p>
+    </a>
+
+    <a href="/eliminar-producto" class="opcion-card">
+        <h3>🗑️ Eliminar producto</h3>
+        <p>Borra un producto del inventario.</p>
+    </a>
+
+    <a href="/subir-imagen" class="opcion-card">
+        <h3>🖼️ Subir imagen</h3>
+        <p>Asigna o reemplaza la imagen de un producto.</p>
+    </a>
+
+</div>
+
+{% endblock %}
+

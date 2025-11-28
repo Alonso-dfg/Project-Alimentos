@@ -18,6 +18,7 @@ class ProductoUpdate(ProductoBase):
 
 class ProductoOut(ProductoBase):
     id: int
+    imagen: Optional[str] = None
     estado: str
 
     class Config:

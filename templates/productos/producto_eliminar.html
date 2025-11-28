@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="titulo">Eliminar Producto</h2>
+
+<form action="/producto-eliminar" method="post" class="form-card">
+    <label>ID del producto:</label>
+    <input type="number" name="id" required>
+    <button class="btn delete">Eliminar</button>
+</form>
+
+{% endblock %}
