@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 # CONFIGURACIÓN DE POSTGRES EN CLEVER CLOUD
 
-DATABASE_URL ="postgresql://u1c2ui6txw10w7zjit28:k4hFRaxs9mwhmbguug1WhOkCKOKvlu@b6g7llycqkpy15cofjsd-postgresql.services.clever-cloud.com:50013/b6g7llycqkpy15cofjsd"
+DATABASE_URL ="postgresql://uf0ntmn4xj4krs28waqc:jjLZ1StjVHLCLFDHN9Lh2xrZZrHKqn@bndc4z5sb5gymmbazimh-postgresql.services.clever-cloud.com:50013/bndc4z5sb5gymmbazimh"
 
 
 # Crear engine de SQLAlchemy

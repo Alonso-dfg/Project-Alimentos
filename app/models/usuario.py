@@ -11,6 +11,6 @@ class Usuario(Base):
     telefono = Column(String)
     ciudad = Column(String)
 
-    productos = relationship("Producto", back_populates="usuario_relacion")
+    productos = relationship("Producto", back_populates="usuario")
 
     estado = Column(String, default="activo")

@@ -3,12 +3,12 @@ from typing import Optional
 
 class ProductoBase(BaseModel):
     nombre: str
-    categoria_id: Optional[float] = None  
-    proveedor_id: Optional[float] = None  
-    usuario_id: Optional[float] = None    
     precio: float
-    ciudad: str
-    fuente: str
+    cantidad: int
+    descripcion: Optional[str] = None
+    categoria_id: Optional[int] = None
+    proveedor_id: Optional[int] = None
+    usuario_id: Optional[int] = None
 
 class ProductoCreate(ProductoBase):
     pass
@@ -18,7 +18,6 @@ class ProductoUpdate(ProductoBase):
 
 class ProductoOut(ProductoBase):
     id: int
-    imagen: Optional[str] = None
     estado: str
 
     class Config:

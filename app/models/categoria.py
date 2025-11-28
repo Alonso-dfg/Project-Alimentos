@@ -9,5 +9,5 @@ class Categoria(Base):
     nombre = Column(String, unique=True, index=True)
 
     # Relación 1:N con productos
-    productos = relationship("Producto", back_populates="categoria_relacion")
+    productos = relationship("Producto", back_populates="categoria")
     estado = Column(String, default="activo")

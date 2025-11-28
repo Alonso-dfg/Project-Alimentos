@@ -4,25 +4,21 @@ from app.database import Base
 
 class Producto(Base):
     __tablename__ = "productos"
-
+    
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, index=True)
-    precio = Column(Float, index=True)
-    ciudad = Column(String, index=True)
-    fuente = Column(String, index=True)
-    imagen = Column(String, nullable=True)
+    precio = Column(Float)
+    cantidad = Column(Integer)
+    descripcion = Column(String)
+  
 
-
-    # Relación con categoría
     categoria_id = Column(Integer, ForeignKey("categorias.id"))
-    categoria_relacion = relationship("Categoria", back_populates="productos")
-    
-    # Relación con proveedor
+    categoria = relationship("Categoria", back_populates="productos")
+
     proveedor_id = Column(Integer, ForeignKey("proveedores.id"))
-    proveedor_relacion = relationship("Proveedor", back_populates="productos")
+    proveedor = relationship("Proveedor", back_populates="productos")
 
-    # Relación con usuario
     usuario_id = Column(Integer, ForeignKey("usuarios.id"))
-    usuario_relacion = relationship("Usuario", back_populates="productos")
+    usuario = relationship("Usuario", back_populates="productos")
 
-    estado = Column(String, default="activo")
+    estado = Column(String, default="active")
