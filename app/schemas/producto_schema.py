@@ -3,18 +3,27 @@ from typing import Optional
 
 class ProductoBase(BaseModel):
     nombre: str
-    categoria_id: Optional[float] = None  
-    proveedor_id: Optional[float] = None  
-    usuario_id: Optional[float] = None    
     precio: float
-    ciudad: str
-    fuente: str
+    cantidad: int
+    ciudad: str                      
+    imagen: Optional[str] = None
+    categoria_id: int
+    proveedor_id: int
+    usuario_id: int
+
 
 class ProductoCreate(ProductoBase):
     pass
 
-class ProductoUpdate(ProductoBase):
-    pass
+class ProductoUpdate(BaseModel):
+    nombre: str | None = None
+    precio: float | None = None
+    cantidad: int | None = None
+    ciudad: str | None = None
+    categoria_id: int | None = None
+    proveedor_id: int | None = None
+    usuario_id: int | None = None
+    imagen: str | None = None
 
 class ProductoOut(ProductoBase):
     id: int

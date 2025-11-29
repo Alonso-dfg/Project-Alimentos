@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from app.database import Base, engine
 from app.routers import productos, categorias, proveedores, usuario, externos
 
@@ -13,6 +14,8 @@ app.include_router(categorias.router)
 app.include_router(proveedores.router)
 app.include_router(usuario.router)
 app.include_router(externos.router)
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")    
 
 @app.get("/")
 def inicio():

@@ -1,16 +1,27 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
-class UsuarioBase(BaseModel):
+class UsuarioCreate(BaseModel):
     nombre: str
     correo: EmailStr
     telefono: str
     ciudad: str
+    # imagen NO va aquí, porque se envía como UploadFile
 
-class UsuarioCreate(UsuarioBase):
-    pass
+class UsuarioUpdate(BaseModel):
+    nombre: Optional[str] = None
+    correo: Optional[EmailStr] = None
+    telefono: Optional[str] = None
+    ciudad: Optional[str] = None
+    imagen: Optional[str] = None   # nombre del archivo guardado, opcional
 
-class UsuarioOut(UsuarioBase):
+class UsuarioOut(BaseModel):
     id: int
+    nombre: str
+    correo: EmailStr
+    telefono: str
+    ciudad: str
+    imagen: Optional[str] = None
 
     class Config:
         orm_mode = True

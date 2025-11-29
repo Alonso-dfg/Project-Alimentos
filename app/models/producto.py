@@ -10,6 +10,9 @@ class Producto(Base):
     precio = Column(Float, index=True)
     ciudad = Column(String, index=True)
     fuente = Column(String, index=True)
+    cantidad = Column(Integer)
+    imagen = Column(String, nullable=True)
+
 
 
     # Relación con categoría

@@ -53,3 +53,20 @@ def eliminar_proveedor(proveedor_id: int, db: Session = Depends(get_db)):
     proveedor.estado = "inactivo"
     db.commit()
     return {"mensaje": "Proveedor eliminado correctamente"}
+
+# Reactivar proveedor inactivo
+@router.put("/reactivar/{proveedor_id}", response_model=ProveedorOut)
+def reactivar_proveedor(proveedor_id: int, db: Session = Depends(get_db)):
+    proveedor = db.query(Proveedor).filter(Proveedor.id == proveedor_id).first()
+
+    if not proveedor:
+        raise HTTPException(status_code=404, detail="Proveedor no encontrado")
+
+    if proveedor.estado == "activo":
+        raise HTTPException(status_code=400, detail="El proveedor ya está activo")
+
+    proveedor.estado = "activo"
+    db.commit()
+    db.refresh(proveedor)
+
+    return proveedor

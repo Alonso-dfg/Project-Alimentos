@@ -10,6 +10,7 @@ class Usuario(Base):
     correo = Column(String, unique=True, index=True)
     telefono = Column(String)
     ciudad = Column(String)
+    imagen = Column(String, nullable=True)
 
     productos = relationship("Producto", back_populates="usuario_relacion")
 

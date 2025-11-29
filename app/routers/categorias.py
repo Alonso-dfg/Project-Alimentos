@@ -50,3 +50,20 @@ def eliminar_categoria(id: int, db: Session = Depends(get_db)):
     categoria.estado = "inactivo"
     db.commit()
     return {"mensaje": "Categoría eliminada correctamente"}
+
+# Reactivar categoría inactiva
+@router.put("/reactivar/{id}", response_model=CategoriaOut)
+def reactivar_categoria(id: int, db: Session = Depends(get_db)):
+    categoria = db.query(Categoria).filter(Categoria.id == id).first()
+
+    if not categoria:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+
+    if categoria.estado == "activo":
+        raise HTTPException(status_code=400, detail="La categoría ya está activa")
+
+    categoria.estado = "activo"
+    db.commit()
+    db.refresh(categoria)
+
+    return categoria
