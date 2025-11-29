@@ -13,6 +13,6 @@ class Proveedor(Base):
     estado = Column(String, default="activo")
 
     # Relación 1:N con productos
-    productos = relationship("Producto", back_populates="proveedor_relacion")
+    productos = relationship("Producto", back_populates="proveedor")
     
     

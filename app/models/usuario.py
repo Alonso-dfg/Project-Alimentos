@@ -12,6 +12,6 @@ class Usuario(Base):
     ciudad = Column(String)
     imagen = Column(String, nullable=True)
 
-    productos = relationship("Producto", back_populates="usuario_relacion")
+    productos = relationship("Producto", back_populates="usuario")
 
     estado = Column(String, default="activo")
