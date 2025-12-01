@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Categoría</title>
+</head>
+<body>
+
+<h1>Crear Categoría</h1>
+
+<form action="/categorias/crear" method="post">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" required><br>
+
+    <button type="submit">Crear</button>
+</form>
+
+{% if mensaje %}
+<p style="color:green; font-weight:bold;">{{ mensaje }}</p>
+{% endif %}
+
+<a href="/categorias/opciones">Volver</a>
+
+</body>
+</html>

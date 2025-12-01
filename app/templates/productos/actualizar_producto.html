@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Producto</title>
+</head>
+<body>
+    <h1>Actualizar Producto ID {{ producto.id }}</h1>
+
+    {% if mensaje %}
+        <p style="color: green; font-weight: bold;">{{ mensaje }}</p>
+    {% endif %}
+
+    <form action="/productos/actualizar_form_post" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ producto.id }}">
+
+        <label>Nombre:</label>
+        <input type="text" name="nombre" value="{{ producto.nombre }}"><br>
+
+        <label>Precio:</label>
+        <input type="number" step="0.01" name="precio" value="{{ producto.precio }}"><br>
+
+        <label>Cantidad:</label>
+        <input type="number" name="cantidad" value="{{ producto.cantidad }}"><br>
+
+        <label>Ciudad:</label>
+        <input type="text" name="ciudad" value="{{ producto.ciudad }}"><br>
+
+        <label>ID Categoría:</label>
+        <input type="number" name="categoria_id" value="{{ producto.categoria_id }}"><br>
+
+        <label>ID Proveedor:</label>
+        <input type="number" name="proveedor_id" value="{{ producto.proveedor_id }}"><br>
+
+        <label>ID Usuario:</label>
+        <input type="number" name="usuario_id" value="{{ producto.usuario_id }}"><br>
+
+        <label>Imagen:</label>
+        <input type="file" name="imagen"><br>
+
+        <button type="submit">Actualizar Producto</button>
+    </form>
+
+    <a href="/productos/opciones">Volver a Opciones</a>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos Inactivos</title>
+</head>
+<body>
+    <h1>Productos Inactivos</h1>
+    <a href="/productos/opciones">Volver a Opciones</a>
+
+    {% if productos %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Ciudad</th>
+                <th>Acción</th>
+            </tr>
+            {% for p in productos %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.nombre }}</td>
+                <td>{{ p.precio }}</td>
+                <td>{{ p.cantidad }}</td>
+                <td>{{ p.ciudad }}</td>
+                <td>
+                    <form action="/productos/reactivar_form" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="{{ p.id }}">
+                        <button type="submit">Reactivar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No hay productos inactivos.</p>
+    {% endif %}
+</body>
+</html>

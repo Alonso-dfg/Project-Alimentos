@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Categorías Inactivas</title>
+</head>
+<body>
+    <h1>Categorías Inactivas</h1>
+    <a href="/categorias/opciones">Volver a Opciones</a>
+
+    {% if mensaje %}
+        <p style="color: green; font-weight: bold;">{{ mensaje }}</p>
+    {% endif %}
+
+    {% if categorias %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acción</th>
+            </tr>
+            {% for c in categorias %}
+            <tr>
+                <td>{{ c.id }}</td>
+                <td>{{ c.nombre }}</td>
+                <td>
+                    <!-- Formulario pequeño para reactivar (POST) -->
+                    <form action="/categorias/reactivar_form" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="{{ c.id }}">
+                        <button type="submit">Reactivar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No hay categorías inactivas.</p>
+    {% endif %}
+</body>
+</html>

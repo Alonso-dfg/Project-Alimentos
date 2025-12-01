@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Categoría</title>
+</head>
+<body>
+    <h1>Eliminar Categoría</h1>
+
+    <form action="/categorias/eliminar_form" method="post">
+        <label>Ingrese ID de la categoría a eliminar:</label>
+        <input type="number" name="id" placeholder="ID" required>
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Eliminar</button>
+    </form>
+
+    <a href="/categorias/opciones">Volver a Opciones</a>
+
+    {% if mensaje %}
+        <p style="color: green; font-weight: bold;">{{ mensaje }}</p>
+    {% endif %}
+</body>
+</html>

@@ -10,3 +10,6 @@ class CategoriaOut(CategoriaBase):
     id: int
     class Config:
         orm_mode = True
+
+class CategoriaUpdate(BaseModel):
+    nombre: str

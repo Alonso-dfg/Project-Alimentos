@@ -17,14 +17,16 @@ class Producto(Base):
 
     # Relación con categoría
     categoria_id = Column(Integer, ForeignKey("categorias.id"))
-    categoria_relacion = relationship("Categoria", back_populates="productos")
+    categoria = relationship("Categoria", back_populates="productos")
     
     # Relación con proveedor
     proveedor_id = Column(Integer, ForeignKey("proveedores.id"))
-    proveedor_relacion = relationship("Proveedor", back_populates="productos")
+    proveedor = relationship("Proveedor", back_populates="productos")
+
 
     # Relación con usuario
     usuario_id = Column(Integer, ForeignKey("usuarios.id"))
-    usuario_relacion = relationship("Usuario", back_populates="productos")
+    usuario = relationship("Usuario", back_populates="productos")
+
 
     estado = Column(String, default="activo")

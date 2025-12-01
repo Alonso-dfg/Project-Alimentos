@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Categoría</title>
+</head>
+<body>
+
+<h1>Buscar Categoría</h1>
+
+<form action="/categorias/buscar" method="post">
+    <label>ID:</label>
+    <input type="number" name="id" required>
+    <button>Buscar</button>
+</form>
+
+{% if categoria %}
+<h2>Resultado:</h2>
+<p><b>ID:</b> {{ categoria.id }}</p>
+<p><b>Nombre:</b> {{ categoria.nombre }}</p>
+{% endif %}
+
+<a href="/categorias/opciones">Volver</a>
+
+</body>
+</html>

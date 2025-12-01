@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Producto</title>
+</head>
+<body>
+    <h1>Buscar Producto por ID</h1>
+
+    <form action="/productos/buscar_form" method="post">
+        <label>Ingrese ID del producto:</label>
+        <input type="number" name="id" placeholder="ID" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <a href="/productos/opciones">Volver a Opciones</a>
+
+    {% if mensaje %}
+        <p style="color: red; font-weight: bold;">{{ mensaje }}</p>
+    {% endif %}
+
+    {% if producto %}
+        <h2>Producto Encontrado:</h2>
+        <ul>
+            <li><strong>ID:</strong> {{ producto.id }}</li>
+            <li><strong>Nombre:</strong> {{ producto.nombre }}</li>
+            <li><strong>Precio:</strong> {{ producto.precio }}</li>
+            <li><strong>Cantidad:</strong> {{ producto.cantidad }}</li>
+            <li><strong>Ciudad:</strong> {{ producto.ciudad }}</li>
+            <li><strong>Categoría ID:</strong> {{ producto.categoria_id }}</li>
+            <li><strong>Proveedor ID:</strong> {{ producto.proveedor_id }}</li>
+            <li><strong>Usuario ID:</strong> {{ producto.usuario_id }}</li>
+            {% if producto.imagen %}
+                <li><strong>Imagen:</strong> <img src="/static/images/{{ producto.imagen }}" width="100"></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</body>
+</html>

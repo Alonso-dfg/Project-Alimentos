@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Categorías Activas</title>
+</head>
+<body>
+
+<h1>Categorías Activas</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+    </tr>
+
+    {% for c in categorias %}
+    <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.nombre }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/categorias/opciones">Volver</a>
+
+</body>
+</html>

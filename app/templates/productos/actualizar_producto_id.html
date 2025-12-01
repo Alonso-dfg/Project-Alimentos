@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Producto</title>
+</head>
+<body>
+    <h1>Actualizar Producto</h1>
+    <form action="/productos/actualizar_form" method="post">
+        <label>Ingrese ID del producto a actualizar:</label>
+        <input type="number" name="id" placeholder="ID" required>
+        <button type="submit">Buscar Producto</button>
+    </form>
+    <a href="/productos/opciones">Volver a Opciones</a>
+
+    {% if mensaje %}
+        <p style="color: red; font-weight: bold;">{{ mensaje }}</p>
+    {% endif %}
+</body>
+</html>

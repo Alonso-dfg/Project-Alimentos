@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
+from app.models.producto import Producto
 from app.models.usuario import Usuario
 from app.schemas.usuario_schema import UsuarioCreate, UsuarioOut
 import shutil, uuid, os
@@ -135,6 +136,14 @@ def eliminar_usuario(usuario_id: int, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    productos = db.query(Producto).filter(Producto.usuario_id == usuario_id).first()
+    if productos:
+        raise HTTPException(
+            status_code=400,
+            detail="No se puede eliminar el usuario porque está asociado a productos."
+        )
+
     usuario.estado = "inactivo"
     db.commit()
     return {"mensaje": "Usuario eliminado correctamente"}

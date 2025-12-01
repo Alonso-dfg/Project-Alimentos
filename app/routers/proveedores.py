@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
+from app.models.producto import Producto
 from app.models.proveedor import Proveedor
 from app.schemas.proveedor_schema import ProveedorCreate, ProveedorOut
 from typing import List
@@ -50,9 +51,20 @@ def eliminar_proveedor(proveedor_id: int, db: Session = Depends(get_db)):
     if not proveedor:
         raise HTTPException(status_code=404, detail="Proveedor no encontrado")
 
+    # Primero verificar si tiene productos asociados
+    productos = db.query(Producto).filter(Producto.proveedor_id == proveedor_id).first()
+    if productos:
+        raise HTTPException(
+            status_code=400,
+            detail="No se puede eliminar el proveedor porque está asociado a productos."
+        )
+
+    # Si no tiene productos, se puede inactivar
     proveedor.estado = "inactivo"
     db.commit()
+
     return {"mensaje": "Proveedor eliminado correctamente"}
+
 
 # Reactivar proveedor inactivo
 @router.put("/reactivar/{proveedor_id}", response_model=ProveedorOut)
