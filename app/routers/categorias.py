@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Form
 from sqlalchemy.orm import Session
+from typing import List
 from app.database import SessionLocal
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -243,13 +244,13 @@ def crear_categoria(categoria: CategoriaCreate, db: Session = Depends(get_db)):
 
 
 # Listar categorías activas
-@router.get("/", response_model=list[CategoriaOut])
+@router.get("/", response_model=List[CategoriaOut])
 def listar_categorias(db: Session = Depends(get_db)):
     return db.query(Categoria).filter(Categoria.estado == "activo").all()
 
 
 # Listar categorías inactivas
-@router.get("/inactivos", response_class=list[CategoriaOut])
+@router.get("/inactivos", response_model=List[CategoriaOut])
 def listar_categorias_inactivas(db: Session = Depends(get_db)):
     return db.query(Categoria).filter(Categoria.estado == "inactivo").all()
 

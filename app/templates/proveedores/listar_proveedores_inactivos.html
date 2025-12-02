@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proveedores Inactivos</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<h1>Proveedores Inactivos</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Ciudad</th>
+        <th>Acciones</th>
+    </tr>
+    {% for proveedor in proveedores %}
+    <tr>
+        <td>{{ proveedor.id }}</td>
+        <td>{{ proveedor.nombre }}</td>
+        <td>{{ proveedor.ciudad }}</td>
+        <td>
+            <!-- FORMULARIO PARA REACTIVAR -->
+            <form action="/proveedores/reactivar" method="post" style="display: inline;">
+                <input type="hidden" name="id" value="{{ proveedor.id }}">
+                <button type="submit">Reactivar</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/proveedores/opciones">Volver a Opciones</a>
+<a href="/proveedores/listar">Ver Proveedores Activos</a>
+
+{% if mensaje %}
+    <p>{{ mensaje }}</p>
+{% endif %}
+</body>
+</html>

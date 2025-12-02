@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Productos Externos</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<h1>Buscar en Open Food Facts</h1>
+
+<form action="/externos/buscar_form" method="post">
+    <label>Término de búsqueda:</label>
+    <input type="text" name="busqueda" value="{{ busqueda if busqueda else '' }}" placeholder="Ej: chocolate, galletas...">
+    <br><br>
+    
+    <label>Límite de resultados:</label>
+    <input type="number" name="limite" value="10" min="1" max="50">
+    <br><br>
+    
+    <button type="submit">Buscar Productos</button>
+</form>
+
+<br>
+<a href="/externos/opciones">Volver a Opciones</a>
+
+{% if mensaje %}
+<h3>{{ mensaje }}</h3>
+{% endif %}
+
+{% if productos %}
+<h2>Resultados ({{ productos|length }})</h2>
+<table border="1">
+    <tr>
+        <th>Nombre</th>
+        <th>Marca</th>
+        <th>Categoría</th>
+        <th>País</th>
+        <th>Precio</th>
+        <th>Imagen</th>
+    </tr>
+    {% for p in productos %}
+    <tr>
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.marca }}</td>
+        <td>{{ p.categoria }}</td>
+        <td>{{ p.pais }}</td>
+        <td>{{ p.precio }}</td>
+        <td>
+            {% if p.imagen %}
+            <img src="{{ p.imagen }}" width="50" height="50">
+            {% else %}
+            Sin imagen
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+</body>
+</html>

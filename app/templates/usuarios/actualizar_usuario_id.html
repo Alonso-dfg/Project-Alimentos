@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Usuario - Paso 1</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<h1>Actualizar Usuario</h1>
+<h3>Paso 1: Ingresa el ID del usuario a actualizar</h3>
+
+<form action="/usuarios/actualizar_form" method="post">
+    <label>ID del Usuario:</label>
+    <input type="number" name="id" required>
+    <button type="submit">Buscar y Editar</button>
+</form>
+
+<br>
+<a href="/usuarios/opciones">Volver a Opciones</a>
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+</body>
+</html>

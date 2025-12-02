@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios Activos</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<h1>Usuarios Activos</h1>
+
+<a href="/usuarios/opciones">Volver a Opciones</a>
+| <a href="/usuarios/inactivos_form">Ver Inactivos</a>
+
+{% if usuarios %}
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Imagen</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Teléfono</th>
+        <th>Ciudad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    {% for usuario in usuarios %}
+    <tr>
+        <td>{{ usuario.id }}</td>
+        <td>
+            {% if usuario.imagen %}
+            <img src="/static/images/{{ usuario.imagen }}" width="50" height="50">
+            {% else %}
+            Sin imagen
+            {% endif %}
+        </td>
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.correo }}</td>
+        <td>{{ usuario.telefono }}</td>
+        <td>{{ usuario.ciudad }}</td>
+        <td>{{ usuario.estado }}</td>
+        <td>
+            <a href="/usuarios/actualizar_form">Editar</a> |
+            <form action="/usuarios/eliminar_form" method="post" style="display: inline;">
+                <input type="hidden" name="id" value="{{ usuario.id }}">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No hay usuarios activos.</p>
+{% endif %}
+
+</body>
+</html>

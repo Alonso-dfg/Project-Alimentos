@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Usuario</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<h1>Actualizar Usuario</h1>
+
+<form action="/usuarios/actualizar_form_post" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{ usuario.id }}">
+    
+    <label>Nombre:</label>
+    <input type="text" name="nombre" value="{{ usuario.nombre }}"><br><br>
+    
+    <label>Correo:</label>
+    <input type="email" name="correo" value="{{ usuario.correo }}"><br><br>
+    
+    <label>Teléfono:</label>
+    <input type="text" name="telefono" value="{{ usuario.telefono }}"><br><br>
+    
+    <label>Ciudad:</label>
+    <input type="text" name="ciudad" value="{{ usuario.ciudad }}"><br><br>
+    
+    <label>Imagen actual:</label><br>
+    {% if usuario.imagen %}
+    <img src="/static/images/{{ usuario.imagen }}" width="100" height="100"><br>
+    {% else %}
+    <p>Sin imagen</p>
+    {% endif %}
+    
+    <label>Nueva imagen (opcional):</label>
+    <input type="file" name="imagen" accept="image/*"><br><br>
+    
+    <button type="submit">Actualizar Usuario</button>
+</form>
+
+<br>
+<a href="/usuarios/opciones">Volver a Opciones</a>
+
+{% if mensaje %}
+<p>{{ mensaje }}</p>
+{% endif %}
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+</body>
+</html>

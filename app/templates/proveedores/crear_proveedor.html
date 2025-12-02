@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Proveedor</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<h1>Crear Proveedor</h1>
+
+<form action="/proveedores/crear" method="post">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" required><br><br>
+
+    <label>Contacto:</label>
+    <input type="text" name="contacto" required><br><br>
+
+    <label>Teléfono:</label>
+    <input type="text" name="telefono" required><br><br>
+
+    <label>Correo:</label>
+    <input type="email" name="correo" required><br><br>
+
+    <label>Ciudad:</label>
+    <input type="text" name="ciudad" required><br><br>
+
+    <button type="submit">Crear</button>
+</form>
+
+<a href="/proveedores/opciones">Volver a Opciones</a>
+
+{% if mensaje %}
+    <p>{{ mensaje }}</p>
+{% endif %}
+</body>
+</html>

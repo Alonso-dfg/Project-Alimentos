@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, Form, Request
 from sqlalchemy.orm import Session
+from typing import List
 from app.database import SessionLocal
 from app.models.producto import Producto  
 from app.schemas.producto_schema import ProductoCreate, ProductoUpdate, ProductoOut
@@ -251,14 +252,14 @@ def buscar_productos(
 # -----------------------------
 # API: listar todos los productos activos
 # -----------------------------
-@router.get("/", response_model=list[ProductoOut])
+@router.get("/", response_model=List[ProductoOut])
 def listar_productos(db: Session = Depends(get_db)):
     return db.query(Producto).filter(Producto.estado == "activo").all()
 
 # -----------------------------
 # API: listar productos inactivos
 # -----------------------------
-@router.get("/inactivos", response_model=list[ProductoOut])
+@router.get("/inactivos", response_model=List[ProductoOut])
 def listar_productos_inactivos(db: Session = Depends(get_db)):
     return db.query(Producto).filter(Producto.estado == "inactivo").all()
 

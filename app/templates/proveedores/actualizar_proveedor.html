@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Proveedor</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+<h1>Actualizar Proveedor</h1>
+
+<form action="/proveedores/editar" method="post">
+    <!-- ID solo para buscar, NO se modifica -->
+    <label>ID del Proveedor a Actualizar:</label>
+    <input type="number" name="id" required><br><br>
+
+    <label>Nuevo Nombre:</label>
+    <input type="text" name="nombre" required><br><br>
+
+    <label>Nuevo Contacto:</label>
+    <input type="text" name="contacto" required><br><br>
+
+    <label>Nuevo Teléfono:</label>
+    <input type="text" name="telefono" required><br><br>
+
+    <label>Nuevo Correo:</label>
+    <input type="email" name="correo" required><br><br>
+
+    <label>Nueva Ciudad:</label>
+    <input type="text" name="ciudad" required><br><br>
+
+    <button type="submit">Actualizar</button>
+</form>
+
+<a href="/proveedores/opciones">Volver a Opciones</a>
+
+{% if mensaje %}
+<p>{{ mensaje }}</p>
+{% endif %}
+
+</body>
+</html>

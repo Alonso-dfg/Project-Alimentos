@@ -1,0 +1,576 @@
+/* ============================================
+   ESTILOS GENERALES - Sistema de Gestión
+   ============================================ */
+
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colores principales */
+    --primary: #2c3e50;
+    --primary-dark: #1a252f;
+    --secondary: #3498db;
+    --success: #27ae60;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    --info: #17a2b8;
+    
+    /* Colores neutrales */
+    --light: #ecf0f1;
+    --dark: #2c3e50;
+    --gray: #95a5a6;
+    --gray-light: #bdc3c7;
+    
+    /* Espaciados */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Bordes */
+    --border-radius: 6px;
+    --border: 1px solid #ddd;
+    
+    /* Sombras */
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+    padding-bottom: 2rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* ============================================
+   ENCABEZADOS Y TEXTO
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 2.2rem;
+    border-bottom: 3px solid var(--secondary);
+    padding-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: var(--dark);
+    margin-top: var(--spacing-lg);
+}
+
+h3 {
+    font-size: 1.4rem;
+    color: var(--primary);
+}
+
+p {
+    margin-bottom: var(--spacing-sm);
+}
+
+a {
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+/* ============================================
+   ENLACES DE NAVEGACIÓN
+   ============================================ */
+.nav-links {
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-sm);
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.nav-links a {
+    display: inline-block;
+    margin-right: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--light);
+    border-radius: var(--border-radius);
+    color: var(--dark);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.nav-links a:hover {
+    background: var(--secondary);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--gray-light);
+    border-radius: var(--border-radius);
+    color: var(--dark);
+}
+
+.back-link:hover {
+    background: var(--gray);
+    color: white;
+}
+
+/* ============================================
+   TABLAS
+   ============================================ */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-md) 0;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+table th {
+    background: var(--primary);
+    color: white;
+    text-align: left;
+    padding: var(--spacing-sm);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-dark);
+}
+
+table td {
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+table tr:hover {
+    background-color: #f8f9fa;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Estilos para estados en tablas */
+.estado-activo {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.estado-inactivo {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+/* ============================================
+   FORMULARIOS
+   ============================================ */
+form {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin: var(--spacing-md) 0;
+    max-width: 800px;
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--dark);
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group input[type="password"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.form-group input[type="file"] {
+    padding: 0.5rem;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    background: var(--light);
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+button, .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: var(--gray);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #219653;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+.btn-warning {
+    background: var(--warning);
+    color: white;
+}
+
+.btn-warning:hover {
+    background: #e67e22;
+}
+
+/* Botones pequeños */
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Botones en línea (para tablas) */
+.btn-inline {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    margin-right: 0.25rem;
+}
+
+/* ============================================
+   IMÁGENES
+   ============================================ */
+.img-thumbnail {
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--light);
+    box-shadow: var(--shadow);
+}
+
+.img-small {
+    width: 50px;
+    height: 50px;
+}
+
+.img-medium {
+    width: 100px;
+    height: 100px;
+}
+
+.img-preview {
+    margin: var(--spacing-sm) 0;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xs);
+    background: var(--light);
+}
+
+/* ============================================
+   MENSAJES Y ALERTAS
+   ============================================ */
+.message {
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    border-radius: var(--border-radius);
+    border-left: 4px solid;
+}
+
+.message-success {
+    background-color: #d4edda;
+    border-color: var(--success);
+    color: #155724;
+}
+
+.message-error {
+    background-color: #f8d7da;
+    border-color: var(--danger);
+    color: #721c24;
+}
+
+.message-warning {
+    background-color: #fff3cd;
+    border-color: var(--warning);
+    color: #856404;
+}
+
+.message-info {
+    background-color: #d1ecf1;
+    border-color: var(--info);
+    color: #0c5460;
+}
+
+/* ============================================
+   LISTAS Y MENÚS
+   ============================================ */
+.menu-list {
+    list-style: none;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+}
+
+.menu-list li {
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.menu-list li:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.menu-list a {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm);
+    color: var(--dark);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: all 0.3s;
+}
+
+.menu-list a:hover {
+    background: var(--light);
+    color: var(--secondary);
+    padding-left: var(--spacing-lg);
+}
+
+/* ============================================
+   TARJETAS (CARDS)
+   ============================================ */
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+    border-bottom: 2px solid var(--light);
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.card-title {
+    color: var(--primary);
+    margin: 0;
+}
+
+/* ============================================
+   PÁGINA DE OPCIONES/MENÚ PRINCIPAL
+   ============================================ */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+}
+
+.option-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    border-top: 4px solid var(--secondary);
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-top-color: var(--primary);
+}
+
+.option-card h3 {
+    color: var(--primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.option-card p {
+    color: var(--gray);
+    margin-bottom: var(--spacing-md);
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mt-1 { margin-top: var(--spacing-xs); }
+.mt-2 { margin-top: var(--spacing-sm); }
+.mt-3 { margin-top: var(--spacing-md); }
+.mt-4 { margin-top: var(--spacing-lg); }
+.mt-5 { margin-top: var(--spacing-xl); }
+
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+.mb-5 { margin-bottom: var(--spacing-xl); }
+
+.p-1 { padding: var(--spacing-xs); }
+.p-2 { padding: var(--spacing-sm); }
+.p-3 { padding: var(--spacing-md); }
+.p-4 { padding: var(--spacing-lg); }
+.p-5 { padding: var(--spacing-xl); }
+
+.d-flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.align-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: var(--spacing-xs); }
+.gap-2 { gap: var(--spacing-sm); }
+.gap-3 { gap: var(--spacing-md); }
+
+.hidden { display: none; }
+.visible { display: block; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    form {
+        padding: var(--spacing-md);
+    }
+}
+
+/* ============================================
+   ESTILOS ESPECÍFICOS PARA ESTADOS
+   ============================================ */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-success {
+    background: #d4edda;
+    color: var(--success);
+}
+
+.badge-danger {
+    background: #f8d7da;
+    color: var(--danger);
+}
+
+.badge-warning {
+    background: #fff3cd;
+    color: var(--warning);
+}
+
+.badge-info {
+    background: #d1ecf1;
+    color: var(--info);
+}

@@ -10,6 +10,7 @@ class Proveedor(Base):
     contacto = Column(String)
     telefono = Column(String)
     ciudad = Column(String)
+    correo = Column(String)
     estado = Column(String, default="activo")
 
     # Relación 1:N con productos

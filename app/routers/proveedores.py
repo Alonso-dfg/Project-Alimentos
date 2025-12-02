@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request, Form
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.producto import Producto
@@ -7,33 +9,221 @@ from app.schemas.proveedor_schema import ProveedorCreate, ProveedorOut
 from typing import List
 
 router = APIRouter(prefix="/proveedores", tags=["Proveedores"])
+templates = Jinja2Templates(directory="app/templates")
 
-@router.post("/", response_model=ProveedorOut)
-def crear_proveedor(proveedor: ProveedorCreate, db: Session = Depends(get_db)):
+"""
+============================
+     RUTAS HTML (ESPECÍFICAS)
+============================
+"""
+
+# ========== OPCIONES ==========
+@router.get("/opciones", response_class=HTMLResponse)
+async def opciones_proveedores(request: Request):
+    return templates.TemplateResponse("proveedores/opciones.html", {"request": request})
+
+
+# ========== LISTAR (SOLO ACTIVOS) ==========
+@router.get("/listar", response_class=HTMLResponse)
+async def listar_proveedores_html(request: Request, db: Session = Depends(get_db)):
+    # FILTRAR solo los activos
+    proveedores = db.query(Proveedor).filter(Proveedor.estado == "activo").all()
+    
+    return templates.TemplateResponse("proveedores/listar_proveedores.html", {
+        "request": request,
+        "proveedores": proveedores
+    })
+
+# ========== INACTIVOS ==========
+@router.get("/inactivos", response_class=HTMLResponse)
+async def listar_inactivos_html(request: Request, db: Session = Depends(get_db)):
+    proveedores = db.query(Proveedor).filter(Proveedor.estado == "inactivo").all()
+    return templates.TemplateResponse("proveedores/listar_proveedores_inactivos.html", {
+        "request": request,
+        "proveedores": proveedores
+    })
+
+
+# ========== REACTIVAR ==========
+@router.post("/reactivar", response_class=HTMLResponse)
+async def reactivar_proveedor(
+    request: Request,
+    id: int = Form(...),  # ¡IMPORTANTE: 'id' viene del formulario!
+    db: Session = Depends(get_db)
+):
+    # Buscar el proveedor
+    proveedor = db.query(Proveedor).filter(Proveedor.id == id).first()
+    
+    if not proveedor:
+        # Si no existe, volver a mostrar la lista con mensaje
+        proveedores = db.query(Proveedor).filter(Proveedor.estado == "inactivo").all()
+        return templates.TemplateResponse("proveedores/listar_proveedores_inactivos.html", {
+            "request": request,
+            "proveedores": proveedores,
+            "mensaje": "Proveedor no encontrado"
+        })
+    
+    # Cambiar estado a activo
+    proveedor.estado = "activo"
+    db.commit()
+    
+    # Redirigir para ver la lista actualizada
+    return RedirectResponse("/proveedores/inactivos", status_code=303)
+
+
+# ========== BUSCAR ==========
+@router.get("/buscar", response_class=HTMLResponse)
+async def buscar_proveedor_form(request: Request):
+    return templates.TemplateResponse("proveedores/buscar_proveedor.html", {"request": request})
+
+
+@router.post("/buscar", response_class=HTMLResponse)
+async def buscar_proveedor_post(request: Request, id: int = Form(...), db: Session = Depends(get_db)):
+    proveedor = db.query(Proveedor).filter(Proveedor.id == id).first()
+    return templates.TemplateResponse("proveedores/buscar_proveedor.html", {
+        "request": request,
+        "proveedor": proveedor,
+        "mensaje": "Proveedor no encontrado" if not proveedor else None
+    })
+
+
+# ========== CREAR ==========
+@router.get("/crear", response_class=HTMLResponse)
+async def crear_form(request: Request):
+    return templates.TemplateResponse("proveedores/crear_proveedor.html", {"request": request})
+
+
+@router.post("/crear", response_class=HTMLResponse)
+async def crear_post(
+    request: Request,
+    nombre: str = Form(...),
+    contacto: str = Form(...),
+    telefono: str = Form(...),
+    correo: str = Form (...),
+    ciudad: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    # Lógica para crear proveedor...
+    nuevo_proveedor = Proveedor(
+        nombre=nombre,
+        contacto=contacto,
+        telefono=telefono,
+        ciudad=ciudad,
+        correo=correo,
+        estado="activo"
+    )
+    db.add(nuevo_proveedor)
+    db.commit()
+    db.refresh(nuevo_proveedor)
+    
+    return RedirectResponse("/proveedores/listar", status_code=303)
+
+
+# ========== EDITAR ==========
+@router.get("/editar", response_class=HTMLResponse)
+async def editar_proveedor_form(request: Request):
+    return templates.TemplateResponse("proveedores/actualizar_proveedor.html", {"request": request})
+
+
+@router.post("/editar", response_class=HTMLResponse)
+async def editar_proveedor_post(
+    request: Request,
+    id: int = Form(...),
+    nombre: str = Form(...),
+    telefono: str = Form(...),
+    correo: str = Form(None),  # Cambia a None si es opcional
+    direccion: str = Form(None),  # Cambia a None si es opcional
+    db: Session = Depends(get_db)
+):
+    proveedor = db.query(Proveedor).filter(Proveedor.id == id).first()
+
+    if not proveedor:
+        return templates.TemplateResponse("proveedores/actualizar_proveedor.html", {
+            "request": request,
+            "mensaje": "Proveedor no encontrado"
+        })
+
+    # Actualizar solo los campos proporcionados
+    proveedor.nombre = nombre
+    proveedor.telefono = telefono
+    if correo:
+        proveedor.correo = correo
+    if direccion:
+        proveedor.direccion = direccion
+
+    db.commit()
+    db.refresh(proveedor)
+
+    return RedirectResponse("/proveedores/listar", status_code=303)
+
+
+# ========== ELIMINAR ==========
+@router.get("/eliminar", response_class=HTMLResponse)
+async def eliminar_proveedor_form(request: Request):
+    return templates.TemplateResponse("proveedores/eliminar_proveedor.html", {"request": request})
+
+
+@router.post("/eliminar", response_class=HTMLResponse)
+async def eliminar_proveedor_post(request: Request, id: int = Form(...), db: Session = Depends(get_db)):
+    proveedor = db.query(Proveedor).filter(Proveedor.id == id).first()
+
+    if not proveedor:
+        return templates.TemplateResponse("proveedores/eliminar_proveedor.html", {
+            "request": request,
+            "mensaje": "Proveedor no encontrado"
+        })
+
+    relacionado = db.query(Producto).filter(Producto.proveedor_id == id).first()
+
+    if relacionado:
+        return templates.TemplateResponse("proveedores/eliminar_proveedor.html", {
+            "request": request,
+            "mensaje": "No se puede eliminar: proveedor asociado a productos."
+        })
+
+    # Cambia a inactivo en lugar de eliminar físicamente
+    proveedor.estado = "inactivo"
+    db.commit()
+
+    return RedirectResponse("/proveedores/listar", status_code=303)
+
+
+"""
+============================
+        RUTAS API
+============================
+"""
+
+# ========== RUTAS API ==========
+@router.get("/api", response_model=List[ProveedorOut])
+def listar_proveedores_api(db: Session = Depends(get_db)):
+    return db.query(Proveedor).filter(Proveedor.estado == "activo").all()
+
+
+@router.get("/api/inactivos", response_model=List[ProveedorOut])
+def listar_proveedores_inactivos_api(db: Session = Depends(get_db)):
+    return db.query(Proveedor).filter(Proveedor.estado == "inactivo").all()
+
+
+@router.get("/api/{proveedor_id}", response_model=ProveedorOut)
+def obtener_proveedor_api(proveedor_id: int, db: Session = Depends(get_db)):
+    proveedor = db.query(Proveedor).filter(Proveedor.id == proveedor_id).first()
+    if not proveedor:
+        raise HTTPException(status_code=404, detail="Proveedor no encontrado")
+    return proveedor
+
+
+@router.post("/api/", response_model=ProveedorOut)
+def crear_proveedor_api(proveedor: ProveedorCreate, db: Session = Depends(get_db)):
     nuevo = Proveedor(**proveedor.dict())
     db.add(nuevo)
     db.commit()
     db.refresh(nuevo)
     return nuevo
 
-@router.get("/", response_model=List[ProveedorOut])
-def listar_proveedores(db: Session = Depends(get_db)):
-    return db.query(Proveedor).filter(Proveedor.estado == "activo").all()
 
-@router.get("/inactivos", response_model=list[ProveedorOut])
-def listar_proveedores_inactivos(db: Session = Depends(get_db)):
-    return db.query(Proveedor).filter(Proveedor.estado == "inactivo").all()
-
-
-@router.get("/{proveedor_id}", response_model=ProveedorOut)
-def obtener_proveedor(proveedor_id: int, db: Session = Depends(get_db)):
-    proveedor = db.query(Proveedor).filter(Proveedor.id == proveedor_id).first()
-    if not proveedor:
-        raise HTTPException(status_code=404, detail="Proveedor no encontrado")
-    return proveedor
-
-@router.put("/{proveedor_id}", response_model=ProveedorOut)
-def actualizar_proveedor(proveedor_id: int, proveedor_actualizado: ProveedorCreate, db: Session = Depends(get_db)):
+@router.put("/api/{proveedor_id}", response_model=ProveedorOut)
+def actualizar_proveedor_api(proveedor_id: int, proveedor_actualizado: ProveedorCreate, db: Session = Depends(get_db)):
     proveedor = db.query(Proveedor).filter(Proveedor.id == proveedor_id).first()
     if not proveedor:
         raise HTTPException(status_code=404, detail="Proveedor no encontrado")
@@ -45,40 +235,34 @@ def actualizar_proveedor(proveedor_id: int, proveedor_actualizado: ProveedorCrea
     db.refresh(proveedor)
     return proveedor
 
-@router.delete("/{proveedor_id}")
-def eliminar_proveedor(proveedor_id: int, db: Session = Depends(get_db)):
+
+@router.delete("/api/{proveedor_id}")
+def eliminar_proveedor_api_endpoint(proveedor_id: int, db: Session = Depends(get_db)):
     proveedor = db.query(Proveedor).filter(Proveedor.id == proveedor_id).first()
+
     if not proveedor:
         raise HTTPException(status_code=404, detail="Proveedor no encontrado")
 
-    # Primero verificar si tiene productos asociados
-    productos = db.query(Producto).filter(Producto.proveedor_id == proveedor_id).first()
-    if productos:
+    relacionado = db.query(Producto).filter(Producto.proveedor_id == proveedor_id).first()
+    if relacionado:
         raise HTTPException(
             status_code=400,
-            detail="No se puede eliminar el proveedor porque está asociado a productos."
+            detail="No se puede eliminar: proveedor asociado a productos."
         )
 
-    # Si no tiene productos, se puede inactivar
     proveedor.estado = "inactivo"
     db.commit()
+    return {"mensaje": "Proveedor inactivado correctamente"}
 
-    return {"mensaje": "Proveedor eliminado correctamente"}
 
-
-# Reactivar proveedor inactivo
-@router.put("/reactivar/{proveedor_id}", response_model=ProveedorOut)
-def reactivar_proveedor(proveedor_id: int, db: Session = Depends(get_db)):
+@router.put("/api/reactivar/{proveedor_id}", response_model=ProveedorOut)
+def reactivar_proveedor_api(proveedor_id: int, db: Session = Depends(get_db)):
     proveedor = db.query(Proveedor).filter(Proveedor.id == proveedor_id).first()
 
     if not proveedor:
         raise HTTPException(status_code=404, detail="Proveedor no encontrado")
-
-    if proveedor.estado == "activo":
-        raise HTTPException(status_code=400, detail="El proveedor ya está activo")
 
     proveedor.estado = "activo"
     db.commit()
     db.refresh(proveedor)
-
     return proveedor

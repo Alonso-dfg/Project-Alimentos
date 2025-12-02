@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios Inactivos</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<h1>Usuarios Inactivos</h1>
+
+<a href="/usuarios/opciones">Volver a Opciones</a>
+| <a href="/usuarios/listar_form">Ver Activos</a>
+
+{% if usuarios %}
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Imagen</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Teléfono</th>
+        <th>Ciudad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    {% for usuario in usuarios %}
+    <tr>
+        <td>{{ usuario.id }}</td>
+        <td>
+            {% if usuario.imagen %}
+            <img src="/static/images/{{ usuario.imagen }}" width="50" height="50">
+            {% else %}
+            Sin imagen
+            {% endif %}
+        </td>
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.correo }}</td>
+        <td>{{ usuario.telefono }}</td>
+        <td>{{ usuario.ciudad }}</td>
+        <td>{{ usuario.estado }}</td>
+        <td>
+            <form action="/usuarios/reactivar_form" method="post" style="display: inline;">
+                <input type="hidden" name="id" value="{{ usuario.id }}">
+                <button type="submit">Reactivar</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No hay usuarios inactivos.</p>
+{% endif %}
+
+{% if mensaje %}
+<p>{{ mensaje }}</p>
+{% endif %}
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+</body>
+</html>

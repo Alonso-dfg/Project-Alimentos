@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reactivar Proveedor</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+<h1>Reactivar Proveedor</h1>
+
+<form action="/proveedores/reactivar_form" method="post">
+    <label>ID del proveedor:</label>
+    <input type="number" name="id" required>
+    <button type="submit">Reactivar</button>
+</form>
+
+<a href="/proveedores/opciones">Volver a Opciones</a>
+
+{% if mensaje %}
+<p>{{ mensaje }}</p>
+{% endif %}
+
+</body>
+</html>

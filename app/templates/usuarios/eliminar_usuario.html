@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Usuario</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+<h1>Eliminar Usuario</h1>
+
+<form action="/usuarios/eliminar_form" method="post">
+    <label>ID del Usuario a eliminar:</label>
+    <input type="number" name="id" required>
+    <button type="submit">Eliminar Usuario</button>
+</form>
+
+<p><strong>Nota:</strong> No se puede eliminar un usuario que tenga productos asociados.</p>
+
+<br>
+<a href="/usuarios/opciones">Volver a Opciones</a>
+
+{% if mensaje %}
+<p>{{ mensaje }}</p>
+{% endif %}
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+</body>
+</html>

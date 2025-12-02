@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Proveedor</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+<h1>Eliminar Proveedor</h1>
+
+<form action="/proveedores/eliminar" method="post">
+    <label>ID del proveedor:</label>
+    <input type="number" name="id" required>
+    <button type="submit">Eliminar</button>
+</form>
+
+<a href="/proveedores/opciones">Volver a Opciones</a>
+
+{% if mensaje %}
+<p style="color:green">{{ mensaje }}</p>
+{% endif %}
+
+{% if error %}
+<p style="color:red">{{ error }}</p>
+{% endif %}
+
+</body>
+</html>

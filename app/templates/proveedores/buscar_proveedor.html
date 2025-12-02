@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Proveedor</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+<h1>Buscar Proveedor por ID</h1>
+
+<form action="/proveedores/buscar" method="post">
+    <label>ID:</label>
+    <input type="number" name="id" required>
+    <button type="submit">Buscar</button>
+</form>
+
+<a href="/proveedores/opciones">Volver a Opciones</a>
+
+{% if proveedor %}
+    <h3>Resultado:</h3>
+    <p><strong>ID:</strong> {{ proveedor.id }}</p>
+    <p><strong>Nombre:</strong> {{ proveedor.nombre }}</p>
+    <p><strong>Ciudad:</strong> {{ proveedor.ciudad }}</p>
+    <p><strong>Estado:</strong> {{ proveedor.estado }}</p>
+{% endif %}
+
+{% if error %}
+<p style="color:red">{{ error }}</p>
+{% endif %}
+</body>
+</html>
