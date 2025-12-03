@@ -1,43 +1,54 @@
-# 🏪 Mi Tienda - Sistema de Gestión Comercial
+# Mi Tienda - Sistema de Gestión Comercial
 
-**Sistema completo de gestión comercial para administración de inventario, proveedores y usuarios**
+**Sistema completo de gestión comercial para administración de inventario, proveedores, usuarios y productos**
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
-## ✨ Características Principales
+## Características Principales
 
-### 📦 Gestión de Productos
-- ✅ Crear, leer, actualizar y eliminar productos
-- ✅ Búsqueda avanzada por nombre, categoría o ID
-- ✅ Gestión de inventario y stock
-- ✅ Categorización de productos
-- ✅ Productos inactivos/reactivación
+---
 
-### 👥 Gestión de Usuarios
-- ✅ Sistema de autenticación
-- ✅ Roles y permisos
-- ✅ Perfiles de usuario
-- ✅ Historial de actividades
+### Gestión de Productos
+- Crear, leer, actualizar y eliminar productos
+- Búsqueda de producto por ID
+- Listar todos los productos activos 
+- Modificar información del producto
+- Eliminar marcar producto como inactivo
+- Ver y reactivar productos eliminados
 
-### 🤝 Gestión de Proveedores
-- ✅ Registro de proveedores
-- ✅ Contactos y información de contacto
-- ✅ Historial de compras
-- ✅ Evaluación de proveedores
+### Gestión de Usuarios
+- Crear, leer, actualizar y eliminar usuarios
+- Búsqueda de usuario por ID
+- Listar todos los usuarios activos 
+- Modificar información del usuario
+- Eliminar marcar usuario como inactivo
+- Ver y reactivar usuario eliminados
 
-### 🌐 API Externa - Open Food Facts
-- 🔍 Búsqueda de productos en base de datos global
-- 📊 +2 millones de productos alimenticios
-- 🌍 Datos de múltiples países
-- 🔓 Datos abiertos y comunitarios
+### Gestión de Proveedores
+- Crear, leer, actualizar y eliminar proveedor
+- Búsqueda de proveedor por ID
+- Listar todos los proveedores activos 
+- Modificar información del proveedor
+- Eliminar marcar proveedor como inactivo
+- Ver y reactivar proveedor eliminados
 
-### 📊 Reportes y Estadísticas
-- 📈 Dashboard con métricas clave
-- 📊 Gráficos y visualizaciones
-- 📋 Reportes exportables
-- 🔔 Alertas y notificaciones
+### Gestión de Categorias
+- Crear, leer, actualizar y eliminar categoria
+- Búsqueda de categoria por ID
+- Listar todos las categorias activos 
+- Modificar información de la categoria
+- Eliminar marcar categoria como inactivo
+- Ver y reactivar categoria eliminados
 
-## 🚀 Tecnologías Utilizadas
+### API Externa - Open Food Facts
+- Busqueda de productos en Open Food Facts API
+- Datos de la API
+
+### Reportes y Estadísticas
+- Dashboard con métricas clave
+- Alertas y notificaciones
+
+## Tecnologías Utilizadas
 
 ### Backend
 - **FastAPI** - Framework web moderno y rápido
@@ -47,18 +58,61 @@
 - **Jinja2** - Motor de plantillas HTML
 
 ### Frontend
-- **HTML5** - Estructura de páginas
-- **CSS3** - Estilos y diseño responsivo
-- **JavaScript** - Interactividad básica
+- **HTML** - Estructura de páginas
+- **CSS** - Estilos y diseño responsivo
 
 ### Despliegue
 - **Clever Cloud** - Hosting y base de datos
 - **PostgreSQL Add-on** - Base de datos gestionada
 - **Git** - Control de versiones
+- **Render** - Hosting donde esta desplegada 
 
-## 📦 Instalación y Configuración
+---
+
+## Instalación y Configuración
 
 ### 1. Clonar el repositorio
-```bash
+```python 
 git clone https://github.com/tuusuario/mi-tienda.git
 cd mi-tienda
+```
+### 2. Crear entorno virtual
+```python
+python -m venv venv
+venv/scripts/activate  #Para windows
+source venv/bin/activate #Para Linux/Mac
+```
+### 3. Instalar dependencias
+```python
+pip install -r requirements.txt
+```
+### 4. Ejecutar la aplicación
+```python
+uvicorn app.main:app --reload 
+```
+---
+
+### Estructura del proyecto
+
+mi-tienda/
+├── app.py                  # Aplicación principal FastAPI
+├── database.py             # Configuración de base de datos
+├── models.py               # Modelos SQLAlchemy
+├── schemas.py              # Esquemas Pydantic
+├── routers/                # Routers de FastAPI
+│   ├── productos.py
+│   ├── usuarios.py
+│   ├── proveedores.py
+│   └── externos.py
+├── static/                 # Archivos estáticos
+│   ├── css/
+│   │   ├── styles.css
+│   └── img/
+├── templates/              # Plantillas HTML
+│   ├── index.html
+│   ├── productos/
+│   ├── usuarios/
+│   ├── proveedores/
+│   └── externos/
+├── requirements.txt        # Dependencias Python
+├── README.md               # Este archivo
