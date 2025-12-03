@@ -156,6 +156,7 @@ mi-tienda/
 ```python
 SQLALCHEMY_DATABASE_URL = "postgresql://..."
 ```
+---
 
 ### Endpoints
 
@@ -170,6 +171,54 @@ SQLALCHEMY_DATABASE_URL = "postgresql://..."
 | GET	| `/api/productos/buscar?q={texto}` |	Buscar productos
 | GET	| `/api/productos/inactivos/` |	Ver productos eliminados
 | PUT	| `/api/productos/{id}/reactivar` |	Reactivar producto
+
+### Usuarios
+| Método | URL | Qué hace |
+|--------|-----|----------|
+| GET |	`/api/usuarios/` |	Listar usuarios
+| GET |	`/api/usuarios/{id}` |	Obtener usuario
+| POST |	`/api/usuarios/` |	Crear usuario
+| PUT |	`/api/usuarios/{id}` |	Actualizar usuario
+| DELETE |	`/api/usuarios/{id}` |	Desactivar usuario
+| GET |	`/api/usuarios/buscar?q={texto}` |	Buscar usuarios
+| GET |	`/api/usuarios/inactivos/` |	Ver usuarios inactivos
+| PUT	| `/api/usuarios/{id}/reactivar` |	Reactivar producto
+
+### Proveedores
+| Método | URL | Qué hace |
+|--------|-----|----------|
+| GET |	`/api/proveedores/` |	Listar proveedores
+| GET |	`/api/proveedores/{id}` |	Obtener proveedor
+| POST |	`/api/proveedores/` | Crear proveedor
+| PUT |	`/api/proveedores/{id}` |	Actualizar proveedor
+| DELETE |	`/api/proveedores/{id}` |	Eliminar proveedor
+| GET |	`/api/proveedores/buscar?q={texto}` |	Buscar proveedores
+| GET |	`/api/proveedores/inactivos/` |	Ver proveedores eliminados
+
+### Categorias
+| Método | URL | Qué hace |
+|--------|-----|----------|
+| GET |	`/api/categorias/` |	Listar categorías
+| GET |	`/api/categorias/{id}` |	Obtener categoría
+| POST |	`/api/categorias/` |	Crear categoría
+| PUT |	`/api/categorias/{id}` |	Actualizar categoría
+| DELETE |	`/api/categorias/{id}` |	Eliminar categoría
+| GET |	`/api/categorias/buscar?q={texto}` |	Buscar categorías
+| GET |	`/api/categorias/inactivas/` |	Ver categorías eliminadas
+| PUT |	`/api/categorias/{id}/reactivar` |	Reactivar categoría
+
+### API externa
+| Método | URL | Qué hace |
+|--------|-----|----------|
+| GET |	`/api/externos/buscar?q={texto}` |	Buscar productos externos
+| GET |	`/api/externos/{id}` |	Obtener producto externo
+| POST |	`/api/externos/importar/{id}` |	Importar producto externo
+| GET |	`/api/externos/estadisticas` |	Estadísticas de API
+
+### Desarrollador
+## Alonso
+[ GitHub ](https://github.com/Alonso-dfg)
+
 
 
 
