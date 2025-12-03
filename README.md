@@ -138,3 +138,10 @@ mi-tienda/
 ├── requirements.txt   # Dependencias de Python
 └── README.md   # Documentación del proyecto
 ```
+
+---
+
+## Despliegue en Clever Cloud
+### 1. Crear cuenta en Clever Cloud
+<clever-cloud.com> 
+
