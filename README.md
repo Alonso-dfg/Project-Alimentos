@@ -93,7 +93,7 @@ uvicorn app.main:app --reload
 ---
 
 ### Estructura del proyecto
-
+```bash
 mi-tienda/
 ├── app.py                  # Aplicación principal FastAPI
 ├── database.py             # Configuración de base de datos
@@ -116,3 +116,4 @@ mi-tienda/
 │   └── externos/
 ├── requirements.txt        # Dependencias Python
 ├── README.md               # Este archivo
+```
