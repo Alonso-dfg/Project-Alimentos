@@ -3,9 +3,6 @@
 **Sistema completo de gestión comercial para administración de inventario, proveedores y usuarios**
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Python](https://img.shields.io/badge/python-3.9+-green)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-yellow)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ## ✨ Características Principales
 
