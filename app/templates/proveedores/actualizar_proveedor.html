@@ -6,37 +6,64 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-<h1>Actualizar Proveedor</h1>
-
-<form action="/proveedores/editar" method="post">
-    <!-- ID solo para buscar, NO se modifica -->
-    <label>ID del Proveedor a Actualizar:</label>
-    <input type="number" name="id" required><br><br>
-
-    <label>Nuevo Nombre:</label>
-    <input type="text" name="nombre" required><br><br>
-
-    <label>Nuevo Contacto:</label>
-    <input type="text" name="contacto" required><br><br>
-
-    <label>Nuevo Teléfono:</label>
-    <input type="text" name="telefono" required><br><br>
-
-    <label>Nuevo Correo:</label>
-    <input type="email" name="correo" required><br><br>
-
-    <label>Nueva Ciudad:</label>
-    <input type="text" name="ciudad" required><br><br>
-
-    <button type="submit">Actualizar</button>
-</form>
-
-<a href="/proveedores/opciones">Volver a Opciones</a>
-
-{% if mensaje %}
-<p>{{ mensaje }}</p>
-{% endif %}
-
+    <div class="container form-container">
+        <h1>Actualizar Proveedor</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <form action="/proveedores/editar" method="post">
+            <div class="form-field">
+                <label class="form-label">ID del Proveedor a Actualizar:</label>
+                <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+            </div>
+            
+            <div class="form-group">
+                <div class="form-field">
+                    <label class="form-label">Nuevo Nombre:</label>
+                    <input type="text" class="form-input" name="nombre" placeholder="Ingresa el nuevo nombre" required>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Nuevo Contacto:</label>
+                    <input type="text" class="form-input" name="contacto" placeholder="Persona de contacto" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="form-field">
+                    <label class="form-label">Nuevo Teléfono:</label>
+                    <input type="text" class="form-input" name="telefono" placeholder="Ej: +57 300 123 4567" required>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Nuevo Correo:</label>
+                    <input type="email" class="form-input" name="correo" placeholder="ejemplo@correo.com" required>
+                </div>
+            </div>
+            
+            <div class="form-field">
+                <label class="form-label">Nueva Ciudad:</label>
+                <input type="text" class="form-input" name="ciudad" placeholder="Ingresa la ciudad" required>
+            </div>
+            
+            <div class="text-center mt-30">
+                <button type="submit" class="btn btn-warning btn-large">
+                    ✏️ Actualizar Proveedor
+                </button>
+            </div>
+        </form>
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/proveedores/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

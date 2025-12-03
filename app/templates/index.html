@@ -2,18 +2,99 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Tienda</title>
+    <title>Mi Tienda - Sistema de Gestión</title>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Bienvenido a Mi Tienda</h1>
-    <ul>
-        <li><a href="/productos/opciones">Productos</a></li>
-        <li><a href="/proveedores/opciones">Proveedores</a></li>
-        <li><a href="/categorias/opciones">Categorías</a></li>
-        <li><a href="/usuarios/opciones">Usuarios</a></li>
-        <li><a href="/externos/opciones">Productos Externos</a></li>
-        <li><a href="/docs">Documentación</a></li>
-    </ul>
+    <div class="container">
+        <div class="welcome-header">
+            <h1> Mi Tienda - Sistema de Gestión</h1>
+            <p class="welcome-text">
+                Sistema completo para la gestión de inventario, proveedores, usuarios y más.
+                Selecciona una sección para comenzar.
+            </p>
+        </div>
+        
+        <div class="menu-grid">
+            <a href="/productos/opciones" class="menu-card">
+                <div class="menu-icon">📦</div>
+                <div class="menu-title">Productos</div>
+                <div class="menu-desc">Gestión completa de inventario de productos</div>
+                <div class="menu-stats">
+                </div>
+            </a>
+            
+            <a href="/proveedores/opciones" class="menu-card">
+                <div class="menu-icon">🚚</div>
+                <div class="menu-title">Proveedores</div>
+                <div class="menu-desc">Administración de proveedores y contactos</div>
+                <div class="menu-stats">
+                </div>
+            </a>
+            
+            <a href="/categorias/opciones" class="menu-card">
+                <div class="menu-icon">🏷️</div>
+                <div class="menu-title">Categorías</div>
+                <div class="menu-desc">Clasificación y organización de productos</div>
+                <div class="menu-stats">
+                </div>
+            </a>
+            
+            <a href="/usuarios/opciones" class="menu-card">
+                <div class="menu-icon">👥</div>
+                <div class="menu-title">Usuarios</div>
+                <div class="menu-desc">Administración de usuarios del sistema</div>
+                <div class="menu-stats">
+                </div>
+            </a>
+            
+            <a href="/externos/opciones" class="menu-card">
+                <div class="menu-icon">🌍</div>
+                <div class="menu-title">API Externa</div>
+                <div class="menu-desc">Conexión con Open Food Facts API</div>
+                <div class="menu-stats">
+                </div>
+            </a>
+            
+            <a href="/docs" class="menu-card">
+                <div class="menu-icon">📚</div>
+                <div class="menu-title">Documentación</div>
+                <div class="menu-desc">Guías y documentación del sistema</div>
+                <div class="menu-stats">
+                </div>
+            </a>
+        </div>
+        
+        <div class="quick-stats mt-30">
+            <div class="stats-title">Resumen del Sistema</div>
+            <div class="stats-grid">
+                <div class="stat-card stat-system">
+                    <div class="stat-icon">⚙️</div>
+                    <div class="stat-text">6 Módulos</div>
+                    <small class="text-muted">Funcionalidades completas</small>
+                </div>
+                <div class="stat-card stat-design">
+                    <div class="stat-icon">🎨</div>
+                    <div class="stat-text">Diseño Responsive</div>
+                    <small class="text-muted">Adapta a cualquier dispositivo</small>
+                </div>
+                <div class="stat-card stat-api">
+                    <div class="stat-icon">🔌</div>
+                    <div class="stat-text">API Integrada</div>
+                    <small class="text-muted">Open Food Facts</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-info mt-30">
+            <div class="footer-text">
+                <strong>Sistema de Gestión Comercial</strong> • Versión 1.0 • 
+                <span class="text-muted">Desarrollado con FastAPI y Python</span>
+            </div>
+        </div>
+    </div>
+
+{% include 'footer.html' %}
+
 </body>
 </html>

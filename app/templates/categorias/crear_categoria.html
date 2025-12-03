@@ -6,21 +6,35 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-<h1>Crear Categoría</h1>
-
-<form action="/categorias/crear" method="post">
-    <label>Nombre:</label>
-    <input type="text" name="nombre" required><br>
-
-    <button type="submit">Crear</button>
-</form>
-
-{% if mensaje %}
-<p style="color:green; font-weight:bold;">{{ mensaje }}</p>
-{% endif %}
-
-<a href="/categorias/opciones">Volver</a>
-
+    <div class="container form-container">
+        <h1>➕ Crear Categoría</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <form action="/categorias/crear" method="post">
+            <div class="form-field">
+                <label class="form-label">Nombre:</label>
+                <input type="text" class="form-input" name="nombre" placeholder="Ingresa el nombre de la categoría" required>
+            </div>
+            
+            <div class="text-center mt-30">
+                <button type="submit" class="btn btn-primary btn-large">
+                    ✅ Crear Categoría
+                </button>
+            </div>
+        </form>
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/categorias/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

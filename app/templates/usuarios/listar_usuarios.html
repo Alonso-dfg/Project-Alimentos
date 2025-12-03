@@ -6,51 +6,115 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Usuarios Activos</h1>
-
-<a href="/usuarios/opciones">Volver a Opciones</a>
-| <a href="/usuarios/inactivos_form">Ver Inactivos</a>
-
-{% if usuarios %}
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Imagen</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Teléfono</th>
-        <th>Ciudad</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-    </tr>
-    {% for usuario in usuarios %}
-    <tr>
-        <td>{{ usuario.id }}</td>
-        <td>
-            {% if usuario.imagen %}
-            <img src="/static/images/{{ usuario.imagen }}" width="50" height="50">
-            {% else %}
-            Sin imagen
-            {% endif %}
-        </td>
-        <td>{{ usuario.nombre }}</td>
-        <td>{{ usuario.correo }}</td>
-        <td>{{ usuario.telefono }}</td>
-        <td>{{ usuario.ciudad }}</td>
-        <td>{{ usuario.estado }}</td>
-        <td>
-            <a href="/usuarios/actualizar_form">Editar</a> |
-            <form action="/usuarios/eliminar_form" method="post" style="display: inline;">
-                <input type="hidden" name="id" value="{{ usuario.id }}">
-                <button type="submit">Eliminar</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<p>No hay usuarios activos.</p>
-{% endif %}
-
+    <div class="container">
+        <h1>👥 Usuarios Activos</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="text-center mb-30">
+            <div class="btn-group">
+                <a href="/usuarios/crear_form" class="btn btn-primary">
+                    ➕ Nuevo Usuario
+                </a>
+                <a href="/usuarios/opciones" class="btn btn-secondary">
+                    ← Volver a Opciones
+                </a>
+                <a href="/usuarios/inactivos_form" class="btn btn-warning">
+                    📂 Ver Inactivos
+                </a>
+            </div>
+        </div>
+        
+        {% if usuarios %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td><strong>{{ usuario.id }}</strong></td>
+                        <td class="text-center">
+                            {% if usuario.imagen %}
+                            <img src="/static/images/{{ usuario.imagen }}" 
+                                 alt="{{ usuario.nombre }}" 
+                                 class="table-image">
+                            {% else %}
+                            <span class="text-muted">Sin imagen</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="product-name">{{ usuario.nombre }}</div>
+                        </td>
+                        <td>{{ usuario.correo }}</td>
+                        <td>{{ usuario.telefono }}</td>
+                        <td>{{ usuario.ciudad }}</td>
+                        <td>
+                            <span class="status-badge status-active">
+                                ✅ {{ usuario.estado }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group-vertical">
+                                <a href="/usuarios/actualizar_form?id={{ usuario.id }}" 
+                                   class="btn btn-warning btn-small">
+                                    ✏️ Editar
+                                </a>
+                                <a href="/usuarios/buscar_form?id={{ usuario.id }}" 
+                                   class="btn btn-info btn-small">
+                                    👁️ Ver
+                                </a>
+                                <form action="/usuarios/eliminar_form" method="post" class="inline-form">
+                                    <input type="hidden" name="id" value="{{ usuario.id }}">
+                                    <button type="submit" class="btn btn-danger btn-small">
+                                        🗑️ Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box mt-30">
+            <div class="summary-title">Resumen de Usuarios</div>
+            <div class="summary-content">
+                <div class="summary-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Total Usuarios</div>
+                        <div class="stat-value">{{ usuarios|length }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="message message-info">
+            <div class="message-icon">📭</div>
+            <div class="message-content">
+                <h3>No hay usuarios activos</h3>
+                <p>Comienza registrando el primer usuario del sistema.</p>
+                <a href="/usuarios/crear_form" class="btn btn-primary mt-20">
+                    ➕ Crear Primer Usuario
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

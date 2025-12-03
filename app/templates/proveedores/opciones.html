@@ -6,19 +6,53 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-<h1>Opciones de proveedor</h1>
-
-<ul>
-    <li><a href="/proveedores/crear">Crear Proveedor</a></li>
-    <li><a href="/proveedores/listar">Listar Proveedores</a></li>
-    <li><a href="/proveedores/inactivos">Listar Inactivos</a></li>
-    <li><a href="/proveedores/buscar">Buscar Proveedor</a></li>
-    <li><a href="/proveedores/editar">Actualizar Proveedor</a></li>
-    <li><a href="/proveedores/eliminar">Eliminar Proveedor</a></li>
-</ul>
-
-<a href="/">Volver al inicio</a>
-
+    <div class="container">
+        <h1>🚚 Opciones de Proveedores</h1>
+        
+        <div class="menu-grid">
+            <a href="/proveedores/crear" class="menu-card">
+                <div class="menu-icon">➕</div>
+                <div class="menu-title">Crear Proveedor</div>
+                <div class="menu-desc">Registrar nuevo proveedor en el sistema</div>
+            </a>
+            
+            <a href="/proveedores/listar" class="menu-card">
+                <div class="menu-icon">📋</div>
+                <div class="menu-title">Listar Proveedores</div>
+                <div class="menu-desc">Ver todos los proveedores activos</div>
+            </a>
+            
+            <a href="/proveedores/inactivos" class="menu-card">
+                <div class="menu-icon">📂</div>
+                <div class="menu-title">Proveedores Inactivos</div>
+                <div class="menu-desc">Ver y reactivar proveedores eliminados</div>
+            </a>
+            
+            <a href="/proveedores/buscar" class="menu-card">
+                <div class="menu-icon">🔍</div>
+                <div class="menu-title">Buscar Proveedor</div>
+                <div class="menu-desc">Buscar proveedor por ID</div>
+            </a>
+            
+            <a href="/proveedores/editar" class="menu-card">
+                <div class="menu-icon">✏️</div>
+                <div class="menu-title">Actualizar Proveedor</div>
+                <div class="menu-desc">Modificar información de proveedor</div>
+            </a>
+            
+            <a href="/proveedores/eliminar" class="menu-card">
+                <div class="menu-icon">🗑️</div>
+                <div class="menu-title">Eliminar Proveedor</div>
+                <div class="menu-desc">Marcar proveedor como inactivo</div>
+            </a>
+        </div>
+        
+        <div class="text-center mt-30">
+            <a href="/" class="btn btn-secondary btn-large">
+                🏠 Volver al Menú Principal
+            </a>
+        </div>
+    </div>
+{% include 'footer.html' %}
 </body>
 </html>

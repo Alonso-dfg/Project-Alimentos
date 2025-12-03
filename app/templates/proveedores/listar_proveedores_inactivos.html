@@ -6,37 +6,82 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Proveedores Inactivos</h1>
-
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Ciudad</th>
-        <th>Acciones</th>
-    </tr>
-    {% for proveedor in proveedores %}
-    <tr>
-        <td>{{ proveedor.id }}</td>
-        <td>{{ proveedor.nombre }}</td>
-        <td>{{ proveedor.ciudad }}</td>
-        <td>
-            <!-- FORMULARIO PARA REACTIVAR -->
-            <form action="/proveedores/reactivar" method="post" style="display: inline;">
-                <input type="hidden" name="id" value="{{ proveedor.id }}">
-                <button type="submit">Reactivar</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-
-<br>
-<a href="/proveedores/opciones">Volver a Opciones</a>
-<a href="/proveedores/listar">Ver Proveedores Activos</a>
-
-{% if mensaje %}
-    <p>{{ mensaje }}</p>
-{% endif %}
+    <div class="container">
+        <h1>📂 Proveedores Inactivos</h1>
+        
+        <div class="info-card">
+            <div class="info-icon">ℹ️</div>
+            <p class="info-text">
+                Estos proveedores están marcados como <strong>inactivos</strong>.
+                Puedes reactivarlos para que vuelvan a estar disponibles.
+            </p>
+        </div>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="text-center mb-30">
+            <div class="btn-group">
+                <a href="/proveedores/opciones" class="btn btn-secondary">
+                    ← Volver a Opciones
+                </a>
+                <a href="/proveedores/listar" class="btn btn-primary">
+                    📋 Ver Proveedores Activos
+                </a>
+            </div>
+        </div>
+        
+        {% if proveedores %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proveedor in proveedores %}
+                    <tr>
+                        <td><strong>{{ proveedor.id }}</strong></td>
+                        <td>{{ proveedor.nombre }}</td>
+                        <td>{{ proveedor.ciudad }}</td>
+                        <td>
+                            <span class="status-badge status-inactive">
+                                ⚠️ Inactivo
+                            </span>
+                        </td>
+                        <td>
+                            <form action="/proveedores/reactivar" method="post" class="inline-form">
+                                <input type="hidden" name="id" value="{{ proveedor.id }}">
+                                <button type="submit" class="btn btn-success btn-small">
+                                    🔄 Reactivar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box mt-30">
+            <div class="summary-title">Resumen</div>
+            <div class="summary-content">
+                <strong>Total de proveedores inactivos:</strong> {{ proveedores|length }}
+            </div>
+        </div>
+        {% else %}
+        <div class="message message-info">
+            🎉 No hay proveedores inactivos en este momento.
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

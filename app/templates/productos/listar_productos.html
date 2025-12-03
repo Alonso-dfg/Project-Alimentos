@@ -6,42 +6,122 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Lista de Productos</h1>
-    <a href="/productos/opciones">Volver a Opciones</a>
-
-    {% if productos %}
-        <table border="1" cellpadding="5" cellspacing="0">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Ciudad</th>
-                <th>Categoría ID</th>
-                <th>Proveedor ID</th>
-                <th>Usuario ID</th>
-                <th>Imagen</th>
-            </tr>
-            {% for p in productos %}
-            <tr>
-                <td>{{ p.id }}</td>
-                <td>{{ p.nombre }}</td>
-                <td>{{ p.precio }}</td>
-                <td>{{ p.cantidad }}</td>
-                <td>{{ p.ciudad }}</td>
-                <td>{{ p.categoria_id }}</td>
-                <td>{{ p.proveedor_id }}</td>
-                <td>{{ p.usuario_id }}</td>
-                <td>
-                    {% if p.imagen %}
-                        <img src="/static/images/{{ p.imagen }}" width="50">
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No hay productos activos.</p>
-    {% endif %}
+    <div class="container">
+        <h1>📋 Lista de Productos Activos</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="text-center mb-30">
+            <div class="btn-group">
+                <a href="/productos/crear_form" class="btn btn-primary">
+                     Nuevo Producto
+                </a>
+                <a href="/productos/opciones" class="btn btn-secondary">
+                     Volver a Opciones
+                </a>
+                <a href="/productos/inactivos_form" class="btn btn-warning">
+                     Ver Inactivos
+                </a>
+            </div>
+        </div>
+        
+        {% if productos %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Ciudad</th>
+                        <th>Categoría</th>
+                        <th>Proveedor</th>
+                        <th>Imagen</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in productos %}
+                    <tr>
+                        <td><strong>{{ p.id }}</strong></td>
+                        <td>
+                            <div class="product-name">{{ p.nombre }}</div>
+                            <small class="text-muted">ID Usuario: {{ p.usuario_id }}</small>
+                        </td>
+                        <td class="text-right">${{ "%.2f"|format(p.precio) }}</td>
+                        <td class="text-center">
+                            <span class="quantity-badge">{{ p.cantidad }}</span>
+                        </td>
+                        <td>{{ p.ciudad }}</td>
+                        <td>{{ p.categoria_id }}</td>
+                        <td>{{ p.proveedor_id }}</td>
+                        <td class="text-center">
+                            {% if p.imagen %}
+                            <img src="/static/images/{{ p.imagen }}" 
+                                 alt="{{ p.nombre }}" 
+                                 class="table-image">
+                            {% else %}
+                            <span class="text-muted">Sin imagen</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group-vertical">
+                                <a href="/productos/actualizar_form?id={{ p.id }}" 
+                                   class="btn btn-warning btn-small">
+                                     Editar
+                                </a>
+                                <a href="/productos/buscar_form?id={{ p.id }}" 
+                                   class="btn btn-info btn-small">
+                                     Ver
+                                </a>
+                                <a href="/productos/eliminar_form?id={{ p.id }}" 
+                                   class="btn btn-danger btn-small">
+                                     Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box mt-30">
+            <div class="summary-title">Resumen del Inventario</div>
+            <div class="summary-content">
+                <div class="summary-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Total Productos</div>
+                        <div class="stat-value">{{ productos|length }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Valor Total</div>
+                        <div class="stat-value">${{ "%.2f"|format(productos|sum(attribute='precio')) }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Inventario Total</div>
+                        <div class="stat-value">{{ productos|sum(attribute='cantidad') }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="message message-info">
+            <div class="message-icon">📭</div>
+            <div class="message-content">
+                <h3>No hay productos activos</h3>
+                <p>Comienza agregando tu primer producto al inventario.</p>
+                <a href="/productos/crear_form" class="btn btn-primary mt-20">
+                     Crear Primer Producto
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

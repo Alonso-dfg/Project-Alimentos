@@ -6,19 +6,53 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-<h1>Opciones de Categorías</h1>
-
-<ul>
-    <li><a href="/categorias/crear_form">Crear Categoría</a></li>
-    <li><a href="/categorias/listar">Listar Categorías</a></li>
-    <li><a href="/categorias/inactivas">Listar Inactivas</a></li>
-    <li><a href="/categorias/buscar_form">Buscar Categoría</a></li>
-    <li><a href="/categorias/actualizar_form">Actualizar Categoria</a></li>
-    <li><a href="/categorias/eliminar_form">Eliminar Categoria</a></li>
-</ul>
-
-<a href="/">Volver al inicio</a>
-
+    <div class="container">
+        <h1>🏷️ Opciones de Categorías</h1>
+        
+        <div class="menu-grid">
+            <a href="/categorias/crear_form" class="menu-card">
+                <div class="menu-icon">➕</div>
+                <div class="menu-title">Crear Categoría</div>
+                <div class="menu-desc">Agregar nueva categoría al sistema</div>
+            </a>
+            
+            <a href="/categorias/listar" class="menu-card">
+                <div class="menu-icon">📋</div>
+                <div class="menu-title">Listar Categorías</div>
+                <div class="menu-desc">Ver todas las categorías activas</div>
+            </a>
+            
+            <a href="/categorias/inactivas" class="menu-card">
+                <div class="menu-icon">📂</div>
+                <div class="menu-title">Categorías Inactivas</div>
+                <div class="menu-desc">Ver y reactivar categorías eliminadas</div>
+            </a>
+            
+            <a href="/categorias/buscar_form" class="menu-card">
+                <div class="menu-icon">🔍</div>
+                <div class="menu-title">Buscar Categoría</div>
+                <div class="menu-desc">Buscar categoría por ID</div>
+            </a>
+            
+            <a href="/categorias/actualizar_form" class="menu-card">
+                <div class="menu-icon">✏️</div>
+                <div class="menu-title">Actualizar Categoría</div>
+                <div class="menu-desc">Modificar información de categoría</div>
+            </a>
+            
+            <a href="/categorias/eliminar_form" class="menu-card">
+                <div class="menu-icon">🗑️</div>
+                <div class="menu-title">Eliminar Categoría</div>
+                <div class="menu-desc">Marcar categoría como inactiva</div>
+            </a>
+        </div>
+        
+        <div class="text-center mt-30">
+            <a href="/" class="btn btn-secondary btn-large">
+                🏠 Volver al Menú Principal
+            </a>
+        </div>
+    </div>
+{% include 'footer.html' %}
 </body>
 </html>

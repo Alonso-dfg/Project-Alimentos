@@ -1,29 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Categorías Activas</title>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-<h1>Categorías Activas</h1>
-
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-    </tr>
-
-    {% for c in categorias %}
-    <tr>
-        <td>{{ c.id }}</td>
-        <td>{{ c.nombre }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<a href="/categorias/opciones">Volver</a>
-
+    <div class="container">
+        <h1>📋 Categorías Activas</h1>
+        
+        <div class="text-center mb-30">
+            <div class="btn-group">
+                <a href="/categorias/crear_form" class="btn btn-primary">
+                    ➕ Nueva Categoría
+                </a>
+                <a href="/categorias/opciones" class="btn btn-secondary">
+                    ← Volver a Opciones
+                </a>
+                <a href="/categorias/inactivas" class="btn btn-warning">
+                    📂 Ver Inactivas
+                </a>
+            </div>
+        </div>
+        
+        {% if categorias %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in categorias %}
+                    <tr>
+                        <td><strong>{{ c.id }}</strong></td>
+                        <td>{{ c.nombre }}</td>
+                        <td>
+                            <span class="status-badge status-active">
+                                ✅ Activa
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group-vertical">
+                                <a href="/categorias/actualizar_form?id={{ c.id }}" 
+                                   class="btn btn-warning btn-small">
+                                    ✏️ Editar
+                                </a>
+                                <a href="/categorias/buscar_form?id={{ c.id }}" 
+                                   class="btn btn-info btn-small">
+                                    👁️ Ver
+                                </a>
+                                <a href="/categorias/eliminar_form?id={{ c.id }}" 
+                                   class="btn btn-danger btn-small">
+                                    🗑️ Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box mt-30">
+            <div class="summary-title">Resumen</div>
+            <div class="summary-content">
+                <strong>Total de categorías activas:</strong> {{ categorias|length }}
+            </div>
+        </div>
+        {% else %}
+        <div class="message message-info">
+            <div class="message-icon">📭</div>
+            <div class="message-content">
+                <h3>No hay categorías activas</h3>
+                <p>Comienza creando la primera categoría del sistema.</p>
+                <a href="/categorias/crear_form" class="btn btn-primary mt-20">
+                    ➕ Crear Primera Categoría
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

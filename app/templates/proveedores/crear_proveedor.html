@@ -6,31 +6,59 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Crear Proveedor</h1>
-
-<form action="/proveedores/crear" method="post">
-    <label>Nombre:</label>
-    <input type="text" name="nombre" required><br><br>
-
-    <label>Contacto:</label>
-    <input type="text" name="contacto" required><br><br>
-
-    <label>Teléfono:</label>
-    <input type="text" name="telefono" required><br><br>
-
-    <label>Correo:</label>
-    <input type="email" name="correo" required><br><br>
-
-    <label>Ciudad:</label>
-    <input type="text" name="ciudad" required><br><br>
-
-    <button type="submit">Crear</button>
-</form>
-
-<a href="/proveedores/opciones">Volver a Opciones</a>
-
-{% if mensaje %}
-    <p>{{ mensaje }}</p>
-{% endif %}
+    <div class="container form-container">
+        <h1>➕ Crear Proveedor</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <form action="/proveedores/crear" method="post">
+            <div class="form-field">
+                <label class="form-label">Nombre:</label>
+                <input type="text" class="form-input" name="nombre" placeholder="Nombre del proveedor" required>
+            </div>
+            
+            <div class="form-group">
+                <div class="form-field">
+                    <label class="form-label">Contacto:</label>
+                    <input type="text" class="form-input" name="contacto" placeholder="Persona de contacto" required>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Teléfono:</label>
+                    <input type="text" class="form-input" name="telefono" placeholder="Ej: +57 300 123 4567" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="form-field">
+                    <label class="form-label">Correo:</label>
+                    <input type="email" class="form-input" name="correo" placeholder="ejemplo@correo.com" required>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Ciudad:</label>
+                    <input type="text" class="form-input" name="ciudad" placeholder="Ingresa la ciudad" required>
+                </div>
+            </div>
+            
+            <div class="text-center mt-30">
+                <button type="submit" class="btn btn-primary btn-large">
+                    ✅ Crear Proveedor
+                </button>
+            </div>
+        </form>
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/proveedores/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

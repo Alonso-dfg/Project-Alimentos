@@ -6,18 +6,71 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Menú de Usuarios</h1>
-
-<ul>
-    <li><a href="/usuarios/crear_form">Crear Usuario</a></li>
-    <li><a href="/usuarios/listar_form">Listar Usuarios Activos</a></li>
-    <li><a href="/usuarios/inactivos_form">Listar Usuarios Inactivos</a></li>
-    <li><a href="/usuarios/buscar_form">Buscar Usuario por ID</a></li>
-    <li><a href="/usuarios/actualizar_form">Actualizar Usuario</a></li>
-    <li><a href="/usuarios/eliminar_form">Eliminar Usuario</a></li>
-</ul>
-
-<br>
-<a href="/">Volver al Menú Principal</a>
+    <div class="container">
+        <h1>👥 Menú de Usuarios</h1>
+        
+        <div class="menu-grid">
+            <a href="/usuarios/crear_form" class="menu-card">
+                <div class="menu-icon">➕</div>
+                <div class="menu-title">Crear Usuario</div>
+                <div class="menu-desc">Registrar nuevo usuario en el sistema</div>
+            </a>
+            
+            <a href="/usuarios/listar_form" class="menu-card">
+                <div class="menu-icon">📋</div>
+                <div class="menu-title">Listar Usuarios</div>
+                <div class="menu-desc">Ver todos los usuarios activos</div>
+            </a>
+            
+            <a href="/usuarios/inactivos_form" class="menu-card">
+                <div class="menu-icon">📂</div>
+                <div class="menu-title">Usuarios Inactivos</div>
+                <div class="menu-desc">Ver y reactivar usuarios eliminados</div>
+            </a>
+            
+            <a href="/usuarios/buscar_form" class="menu-card">
+                <div class="menu-icon">🔍</div>
+                <div class="menu-title">Buscar Usuario</div>
+                <div class="menu-desc">Buscar usuario por ID</div>
+            </a>
+            
+            <a href="/usuarios/actualizar_form" class="menu-card">
+                <div class="menu-icon">✏️</div>
+                <div class="menu-title">Actualizar Usuario</div>
+                <div class="menu-desc">Modificar información de usuario</div>
+            </a>
+            
+            <a href="/usuarios/eliminar_form" class="menu-card">
+                <div class="menu-icon">🗑️</div>
+                <div class="menu-title">Eliminar Usuario</div>
+                <div class="menu-desc">Marcar usuario como inactivo</div>
+            </a>
+        </div>
+        
+        <div class="quick-stats mt-30">
+            <div class="stats-title">Acceso Rápido</div>
+            <div class="stats-grid">
+                <a href="/usuarios/crear_form" class="stat-card stat-create">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-text">Crear Rápido</div>
+                </a>
+                <a href="/usuarios/listar_form" class="stat-card stat-list">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-text">Ver Usuarios</div>
+                </a>
+                <a href="/usuarios/inactivos_form" class="stat-card stat-inactive">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-text">Gestionar Inactivos</div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="text-center mt-30">
+            <a href="/" class="btn btn-secondary btn-large">
+                🏠 Volver al Menú Principal
+            </a>
+        </div>
+    </div>
+{% include 'footer.html' %}
 </body>
 </html>

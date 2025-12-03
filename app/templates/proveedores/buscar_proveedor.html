@@ -6,27 +6,89 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-<h1>Buscar Proveedor por ID</h1>
-
-<form action="/proveedores/buscar" method="post">
-    <label>ID:</label>
-    <input type="number" name="id" required>
-    <button type="submit">Buscar</button>
-</form>
-
-<a href="/proveedores/opciones">Volver a Opciones</a>
-
-{% if proveedor %}
-    <h3>Resultado:</h3>
-    <p><strong>ID:</strong> {{ proveedor.id }}</p>
-    <p><strong>Nombre:</strong> {{ proveedor.nombre }}</p>
-    <p><strong>Ciudad:</strong> {{ proveedor.ciudad }}</p>
-    <p><strong>Estado:</strong> {{ proveedor.estado }}</p>
-{% endif %}
-
-{% if error %}
-<p style="color:red">{{ error }}</p>
-{% endif %}
+    <div class="container form-container">
+        <h1>🔍 Buscar Proveedor por ID</h1>
+        
+        {% if error %}
+        <div class="message message-error">
+            ⚠ {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="search-box">
+            <form action="/proveedores/buscar" method="post">
+                <div class="form-field">
+                    <label class="form-label">ID del Proveedor:</label>
+                    <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button type="submit" class="btn btn-primary btn-large">
+                        🔍 Buscar Proveedor
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% if proveedor %}
+        <div class="data-card mt-30">
+            <div class="card-header">
+                <div class="card-title">{{ proveedor.nombre }}</div>
+                <div class="card-id">ID: {{ proveedor.id }}</div>
+            </div>
+            
+            <div class="card-details">
+                <div class="detail-item">
+                    <div class="detail-label">Ciudad</div>
+                    <div class="detail-value">{{ proveedor.ciudad }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Contacto</div>
+                    <div class="detail-value">{{ proveedor.contacto }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Teléfono</div>
+                    <div class="detail-value">{{ proveedor.telefono }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Correo</div>
+                    <div class="detail-value">{{ proveedor.correo }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Estado</div>
+                    <div class="detail-value">
+                        <span class="status-badge {% if proveedor.estado == 'activo' %}status-active{% else %}status-inactive{% endif %}">
+                            {{ proveedor.estado }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-group mt-30">
+                <a href="/proveedores/editar?id={{ proveedor.id }}" 
+                   class="btn btn-warning">
+                    ✏️ Editar Proveedor
+                </a>
+                
+                <a href="/proveedores/eliminar?id={{ proveedor.id }}" 
+                   class="btn btn-danger">
+                    🗑️ Eliminar Proveedor
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/proveedores/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

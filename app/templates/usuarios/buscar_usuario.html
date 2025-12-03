@@ -6,60 +6,97 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Buscar Usuario por ID</h1>
-
-<form action="/usuarios/buscar_form" method="post">
-    <label>ID del Usuario:</label>
-    <input type="number" name="id" required>
-    <button type="submit">Buscar</button>
-</form>
-
-<br>
-<a href="/usuarios/opciones">Volver a Opciones</a>
-
-{% if usuario %}
-<h2>Resultado:</h2>
-<table border="1">
-    <tr>
-        <td><strong>ID:</strong></td>
-        <td>{{ usuario.id }}</td>
-    </tr>
-    <tr>
-        <td><strong>Imagen:</strong></td>
-        <td>
+    <div class="container form-container">
+        <h1>🔍 Buscar Usuario por ID</h1>
+        
+        {% if mensaje %}
+        <div class="message message-error">
+            ⚠ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="search-box">
+            <form action="/usuarios/buscar_form" method="post">
+                <div class="form-field">
+                    <label class="form-label">ID del Usuario:</label>
+                    <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button type="submit" class="btn btn-primary btn-large">
+                        🔍 Buscar Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% if usuario %}
+        <div class="data-card mt-30">
+            <div class="card-header">
+                <div class="card-title">{{ usuario.nombre }}</div>
+                <div class="card-id">ID: {{ usuario.id }}</div>
+            </div>
+            
+            <div class="card-details">
+                <div class="detail-item">
+                    <div class="detail-label">Correo</div>
+                    <div class="detail-value">{{ usuario.correo }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Teléfono</div>
+                    <div class="detail-value">{{ usuario.telefono }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Ciudad</div>
+                    <div class="detail-value">{{ usuario.ciudad }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Estado</div>
+                    <div class="detail-value">
+                        <span class="status-badge {% if usuario.estado == 'activo' %}status-active{% else %}status-inactive{% endif %}">
+                            {{ usuario.estado }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
             {% if usuario.imagen %}
-            <img src="/static/images/{{ usuario.imagen }}" width="100" height="100">
+            <div class="text-center mt-20">
+                <div class="detail-label">Imagen del Usuario</div>
+                <img src="/static/images/{{ usuario.imagen }}" 
+                     alt="{{ usuario.nombre }}" 
+                     class="card-image">
+            </div>
             {% else %}
-            Sin imagen
+            <div class="message message-info mt-20">
+                ℹ️ Este usuario no tiene imagen
+            </div>
             {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <td><strong>Nombre:</strong></td>
-        <td>{{ usuario.nombre }}</td>
-    </tr>
-    <tr>
-        <td><strong>Correo:</strong></td>
-        <td>{{ usuario.correo }}</td>
-    </tr>
-    <tr>
-        <td><strong>Teléfono:</strong></td>
-        <td>{{ usuario.telefono }}</td>
-    </tr>
-    <tr>
-        <td><strong>Ciudad:</strong></td>
-        <td>{{ usuario.ciudad }}</td>
-    </tr>
-    <tr>
-        <td><strong>Estado:</strong></td>
-        <td>{{ usuario.estado }}</td>
-    </tr>
-</table>
-{% endif %}
-
-{% if mensaje %}
-<p>{{ mensaje }}</p>
-{% endif %}
-
+            
+            <div class="btn-group mt-30">
+                <a href="/usuarios/actualizar_form?id={{ usuario.id }}" 
+                   class="btn btn-warning">
+                    ✏️ Editar Usuario
+                </a>
+                
+                <a href="/usuarios/eliminar_form?id={{ usuario.id }}" 
+                   class="btn btn-danger">
+                    🗑️ Eliminar Usuario
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/usuarios/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

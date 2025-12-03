@@ -6,46 +6,94 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-<h1>Lista de Proveedores Activos</h1>
-<a href="/proveedores/opciones">Volver a Opciones</a>
-| <a href="/proveedores/inactivos">Ver Inactivos</a>
-
-{% if proveedores %}
-<table border="1" cellpadding="5">
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Contacto</th>
-        <th>Teléfono</th>
-        <th>Correo</th>
-        <th>Ciudad</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-    </tr>
-
-    {% for p in proveedores %}
-    <tr>
-        <td>{{ p.id }}</td>
-        <td>{{ p.nombre }}</td>
-        <td>{{ p.contacto }}</td>
-        <td>{{ p.telefono }}</td>
-        <td>{{ p.correo }}</td>
-        <td>{{ p.ciudad }}</td>
-        <td>{{ p.estado }}</td>
-        <td>
-            <a href="/proveedores/editar">Editar</a> |
-            <form action="/proveedores/eliminar" method="post" style="display: inline;">
-                <input type="hidden" name="id" value="{{ p.id }}">
-                <button type="submit" onclick="return confirm('¿Inactivar este proveedor?')">Inactivar</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<p>No hay proveedores activos.</p>
-{% endif %}
-
+    <div class="container">
+        <h1>📋 Lista de Proveedores Activos</h1>
+        
+        <div class="text-center mb-30">
+            <div class="btn-group">
+                <a href="/proveedores/crear" class="btn btn-primary">
+                    ➕ Nuevo Proveedor
+                </a>
+                <a href="/proveedores/opciones" class="btn btn-secondary">
+                    ← Volver a Opciones
+                </a>
+                <a href="/proveedores/inactivos" class="btn btn-warning">
+                    📂 Ver Inactivos
+                </a>
+            </div>
+        </div>
+        
+        {% if proveedores %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Contacto</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in proveedores %}
+                    <tr>
+                        <td><strong>{{ p.id }}</strong></td>
+                        <td>{{ p.nombre }}</td>
+                        <td>{{ p.contacto }}</td>
+                        <td>{{ p.telefono }}</td>
+                        <td>{{ p.correo }}</td>
+                        <td>{{ p.ciudad }}</td>
+                        <td>
+                            <span class="status-badge status-active">
+                                ✅ {{ p.estado }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group-vertical">
+                                <a href="/proveedores/editar?id={{ p.id }}" 
+                                   class="btn btn-warning btn-small">
+                                    ✏️ Editar
+                                </a>
+                                <a href="/proveedores/buscar?id={{ p.id }}" 
+                                   class="btn btn-info btn-small">
+                                    👁️ Ver
+                                </a>
+                                <form action="/proveedores/eliminar" method="post" class="inline-form">
+                                    <input type="hidden" name="id" value="{{ p.id }}">
+                                    <button type="submit" class="btn btn-danger btn-small">
+                                        🗑️ Inactivar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box mt-30">
+            <div class="summary-title">Resumen</div>
+            <div class="summary-content">
+                <strong>Total de proveedores activos:</strong> {{ proveedores|length }}
+            </div>
+        </div>
+        {% else %}
+        <div class="message message-info">
+            <div class="message-icon">📭</div>
+            <div class="message-content">
+                <h3>No hay proveedores activos</h3>
+                <p>Comienza registrando el primer proveedor del sistema.</p>
+                <a href="/proveedores/crear" class="btn btn-primary mt-20">
+                    ➕ Crear Primer Proveedor
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

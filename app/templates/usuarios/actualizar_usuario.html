@@ -6,45 +6,91 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Actualizar Usuario</h1>
-
-<form action="/usuarios/actualizar_form_post" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id" value="{{ usuario.id }}">
-    
-    <label>Nombre:</label>
-    <input type="text" name="nombre" value="{{ usuario.nombre }}"><br><br>
-    
-    <label>Correo:</label>
-    <input type="email" name="correo" value="{{ usuario.correo }}"><br><br>
-    
-    <label>Teléfono:</label>
-    <input type="text" name="telefono" value="{{ usuario.telefono }}"><br><br>
-    
-    <label>Ciudad:</label>
-    <input type="text" name="ciudad" value="{{ usuario.ciudad }}"><br><br>
-    
-    <label>Imagen actual:</label><br>
-    {% if usuario.imagen %}
-    <img src="/static/images/{{ usuario.imagen }}" width="100" height="100"><br>
-    {% else %}
-    <p>Sin imagen</p>
-    {% endif %}
-    
-    <label>Nueva imagen (opcional):</label>
-    <input type="file" name="imagen" accept="image/*"><br><br>
-    
-    <button type="submit">Actualizar Usuario</button>
-</form>
-
-<br>
-<a href="/usuarios/opciones">Volver a Opciones</a>
-
-{% if mensaje %}
-<p>{{ mensaje }}</p>
-{% endif %}
-{% if error %}
-<p>{{ error }}</p>
-{% endif %}
-
+    <div class="container form-container">
+        <h1>Actualizar Usuario ID {{ usuario.id }}</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="message message-error">
+            ⚠ {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="data-card mb-30">
+            <div class="card-header">
+                <div class="card-title">Usuario #{{ usuario.id }}</div>
+                <div class="card-id">ID: {{ usuario.id }}</div>
+            </div>
+            
+            <form action="/usuarios/actualizar_form_post" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{ usuario.id }}">
+                
+                <div class="form-group">
+                    <div class="form-field">
+                        <label class="form-label">Nombre:</label>
+                        <input type="text" class="form-input" name="nombre" value="{{ usuario.nombre }}" required>
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">Correo:</label>
+                        <input type="email" class="form-input" name="correo" value="{{ usuario.correo }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-field">
+                        <label class="form-label">Teléfono:</label>
+                        <input type="text" class="form-input" name="telefono" value="{{ usuario.telefono }}" required>
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">Ciudad:</label>
+                        <input type="text" class="form-input" name="ciudad" value="{{ usuario.ciudad }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Imagen Actual:</label>
+                    {% if usuario.imagen %}
+                    <div class="current-image">
+                        <img src="/static/images/{{ usuario.imagen }}" alt="Imagen actual" class="card-image">
+                        <small class="text-muted">Imagen actual del usuario</small>
+                    </div>
+                    {% else %}
+                    <div class="message message-info">
+                        ℹ️ Este usuario no tiene imagen
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Nueva Imagen (opcional):</label>
+                    <div class="file-upload">
+                        <input type="file" name="imagen" accept="image/*">
+                        <span>📁 Seleccionar nueva imagen</span>
+                        <div class="file-text">Dejar vacío para mantener la imagen actual</div>
+                    </div>
+                    <small class="text-muted mt-10">
+                        Formatos: JPG, PNG, GIF, WEBP (Max 5MB)
+                    </small>
+                </div>
+                
+                <div class="btn-group mt-30">
+                    <button type="submit" class="btn btn-warning btn-large">
+                        ✏️ Actualizar Usuario
+                    </button>
+                    
+                    <a href="/usuarios/opciones" class="btn btn-secondary">
+                        ← Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -6,57 +6,102 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Usuarios Inactivos</h1>
-
-<a href="/usuarios/opciones">Volver a Opciones</a>
-| <a href="/usuarios/listar_form">Ver Activos</a>
-
-{% if usuarios %}
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Imagen</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Teléfono</th>
-        <th>Ciudad</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-    </tr>
-    {% for usuario in usuarios %}
-    <tr>
-        <td>{{ usuario.id }}</td>
-        <td>
-            {% if usuario.imagen %}
-            <img src="/static/images/{{ usuario.imagen }}" width="50" height="50">
-            {% else %}
-            Sin imagen
-            {% endif %}
-        </td>
-        <td>{{ usuario.nombre }}</td>
-        <td>{{ usuario.correo }}</td>
-        <td>{{ usuario.telefono }}</td>
-        <td>{{ usuario.ciudad }}</td>
-        <td>{{ usuario.estado }}</td>
-        <td>
-            <form action="/usuarios/reactivar_form" method="post" style="display: inline;">
-                <input type="hidden" name="id" value="{{ usuario.id }}">
-                <button type="submit">Reactivar</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<p>No hay usuarios inactivos.</p>
-{% endif %}
-
-{% if mensaje %}
-<p>{{ mensaje }}</p>
-{% endif %}
-{% if error %}
-<p>{{ error }}</p>
-{% endif %}
-
+    <div class="container">
+        <h1>📂 Usuarios Inactivos</h1>
+        
+        <div class="info-card">
+            <div class="info-icon">ℹ️</div>
+            <p class="info-text">
+                Estos usuarios están marcados como <strong>inactivos</strong>.
+                Puedes reactivarlos para que vuelvan a tener acceso al sistema.
+            </p>
+        </div>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="message message-error">
+            ⚠ {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="text-center mb-30">
+            <div class="btn-group">
+                <a href="/usuarios/opciones" class="btn btn-secondary">
+                    ← Volver a Opciones
+                </a>
+                <a href="/usuarios/listar_form" class="btn btn-primary">
+                    👥 Ver Usuarios Activos
+                </a>
+            </div>
+        </div>
+        
+        {% if usuarios %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td><strong>{{ usuario.id }}</strong></td>
+                        <td class="text-center">
+                            {% if usuario.imagen %}
+                            <img src="/static/images/{{ usuario.imagen }}" 
+                                 alt="{{ usuario.nombre }}" 
+                                 class="table-image">
+                            {% else %}
+                            <span class="text-muted">Sin imagen</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ usuario.nombre }}</td>
+                        <td>{{ usuario.correo }}</td>
+                        <td>{{ usuario.telefono }}</td>
+                        <td>{{ usuario.ciudad }}</td>
+                        <td>
+                            <span class="status-badge status-inactive">
+                                ⚠️ {{ usuario.estado }}
+                            </span>
+                        </td>
+                        <td>
+                            <form action="/usuarios/reactivar_form" method="post" class="inline-form">
+                                <input type="hidden" name="id" value="{{ usuario.id }}">
+                                <button type="submit" class="btn btn-success btn-small">
+                                    🔄 Reactivar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box mt-30">
+            <div class="summary-title">Resumen</div>
+            <div class="summary-content">
+                <strong>Total de usuarios inactivos:</strong> {{ usuarios|length }}
+            </div>
+        </div>
+        {% else %}
+        <div class="message message-info">
+            🎉 No hay usuarios inactivos en este momento.
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

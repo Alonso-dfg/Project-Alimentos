@@ -6,56 +6,113 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Buscar en Open Food Facts</h1>
-
-<form action="/externos/buscar_form" method="post">
-    <label>Término de búsqueda:</label>
-    <input type="text" name="busqueda" value="{{ busqueda if busqueda else '' }}" placeholder="Ej: chocolate, galletas...">
-    <br><br>
-    
-    <label>Límite de resultados:</label>
-    <input type="number" name="limite" value="10" min="1" max="50">
-    <br><br>
-    
-    <button type="submit">Buscar Productos</button>
-</form>
-
-<br>
-<a href="/externos/opciones">Volver a Opciones</a>
-
-{% if mensaje %}
-<h3>{{ mensaje }}</h3>
-{% endif %}
-
-{% if productos %}
-<h2>Resultados ({{ productos|length }})</h2>
-<table border="1">
-    <tr>
-        <th>Nombre</th>
-        <th>Marca</th>
-        <th>Categoría</th>
-        <th>País</th>
-        <th>Precio</th>
-        <th>Imagen</th>
-    </tr>
-    {% for p in productos %}
-    <tr>
-        <td>{{ p.nombre }}</td>
-        <td>{{ p.marca }}</td>
-        <td>{{ p.categoria }}</td>
-        <td>{{ p.pais }}</td>
-        <td>{{ p.precio }}</td>
-        <td>
-            {% if p.imagen %}
-            <img src="{{ p.imagen }}" width="50" height="50">
-            {% else %}
-            Sin imagen
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% endif %}
-
+    <div class="container form-container">
+        <h1>🔍 Buscar en Open Food Facts</h1>
+        
+        {% if mensaje %}
+        <div class="message message-info">
+            {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="search-box">
+            <form action="/externos/buscar_form" method="post">
+                <div class="form-field">
+                    <label class="form-label">Término de búsqueda:</label>
+                    <input type="text" class="form-input" name="busqueda" 
+                           value="{{ busqueda if busqueda else '' }}" 
+                           placeholder="Ej: chocolate, galletas, leche, arroz...">
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Límite de resultados:</label>
+                    <input type="number" class="form-input" name="limite" value="10" min="1" max="50">
+                    <small class="form-help">Máximo 50 resultados por búsqueda</small>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-large">
+                        🌐 Buscar Productos
+                    </button>
+                    <a href="/externos/opciones" class="btn btn-secondary">
+                        ← Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        {% if productos %}
+        <div class="results-header">
+            <h2>Resultados de Búsqueda</h2>
+            <div class="results-count">
+                <span class="badge">{{ productos|length }}</span> productos encontrados
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Categoría</th>
+                        <th>País</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in productos %}
+                    <tr>
+                        <td class="text-center">
+                            {% if p.imagen %}
+                            <img src="{{ p.imagen }}" 
+                                 alt="{{ p.nombre }}" 
+                                 class="table-image" 
+                                 onerror="this.src='/static/img/no-image.png'">
+                            {% else %}
+                            <span class="no-image">📷</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="product-name">{{ p.nombre or 'Sin nombre' }}</div>
+                            <small class="product-id">ID: {{ p.id_externo }}</small>
+                        </td>
+                        <td>{{ p.marca or 'N/A' }}</td>
+                        <td>{{ p.categoria or 'N/A' }}</td>
+                        <td>{{ p.pais or 'N/A' }}</td>
+                        <td class="text-right">
+                            {% if p.precio %}
+                            <span class="price">${{ p.precio }}</span>
+                            {% else %}
+                            <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="search-summary">
+            <div class="summary-card">
+                <h3>📋 Resumen de Búsqueda</h3>
+                <div class="summary-content">
+                    <p><strong>Término buscado:</strong> "{{ busqueda }}"</p>
+                    <p><strong>Resultados encontrados:</strong> {{ productos|length }}</p>
+                    <p><strong>Fuente:</strong> Open Food Facts API</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if not productos and busqueda %}
+        <div class="no-results">
+            <div class="no-results-icon">🔍</div>
+            <h3>No se encontraron productos</h3>
+            <p>Intenta con otro término de búsqueda o verifica tu conexión a internet.</p>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

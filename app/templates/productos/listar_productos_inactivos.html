@@ -6,37 +6,87 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Productos Inactivos</h1>
-    <a href="/productos/opciones">Volver a Opciones</a>
-
-    {% if productos %}
-        <table border="1" cellpadding="5" cellspacing="0">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Ciudad</th>
-                <th>Acción</th>
-            </tr>
-            {% for p in productos %}
-            <tr>
-                <td>{{ p.id }}</td>
-                <td>{{ p.nombre }}</td>
-                <td>{{ p.precio }}</td>
-                <td>{{ p.cantidad }}</td>
-                <td>{{ p.ciudad }}</td>
-                <td>
-                    <form action="/productos/reactivar_form" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="{{ p.id }}">
-                        <button type="submit">Reactivar</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No hay productos inactivos.</p>
-    {% endif %}
+    <div class="container">
+        <h1>📂 Productos Inactivos</h1>
+        
+        <div class="info-card">
+            <div class="info-icon">ℹ️</div>
+            <p class="info-text">
+                Estos productos están marcados como <strong>inactivos</strong>.
+                Puedes reactivarlos para que vuelvan a estar disponibles.
+            </p>
+        </div>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="text-center mb-30">
+            <a href="/productos/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+        
+        {% if productos %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in productos %}
+                    <tr>
+                        <td><strong>{{ p.id }}</strong></td>
+                        <td>{{ p.nombre }}</td>
+                        <td>${{ "%.2f"|format(p.precio) }}</td>
+                        <td>{{ p.cantidad }}</td>
+                        <td>{{ p.ciudad }}</td>
+                        <td>
+                            <span class="status-badge status-inactive">
+                                 Inactivo
+                            </span>
+                        </td>
+                        <td>
+                            <form action="/productos/reactivar_form" method="post" class="inline-form">
+                                <input type="hidden" name="id" value="{{ p.id }}">
+                                <button type="submit" class="btn btn-success btn-small">
+                                     Reactivar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box mt-30">
+            <div class="summary-title">Resumen</div>
+            <div class="summary-content">
+                <strong>Total de productos inactivos:</strong> {{ productos|length }}
+            </div>
+        </div>
+        {% else %}
+        <div class="message message-info">
+             No hay productos inactivos en este momento.
+        </div>
+        {% endif %}
+        
+        <div class="text-center mt-30">
+            <a href="/productos/listar_todos" class="btn btn-primary">
+                 Ver Productos Activos
+            </a>
+        </div>
+    </div>
 </body>
 </html>

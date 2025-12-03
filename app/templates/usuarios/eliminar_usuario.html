@@ -6,25 +6,49 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Eliminar Usuario</h1>
-
-<form action="/usuarios/eliminar_form" method="post">
-    <label>ID del Usuario a eliminar:</label>
-    <input type="number" name="id" required>
-    <button type="submit">Eliminar Usuario</button>
-</form>
-
-<p><strong>Nota:</strong> No se puede eliminar un usuario que tenga productos asociados.</p>
-
-<br>
-<a href="/usuarios/opciones">Volver a Opciones</a>
-
-{% if mensaje %}
-<p>{{ mensaje }}</p>
-{% endif %}
-{% if error %}
-<p>{{ error }}</p>
-{% endif %}
-
+    <div class="container form-container">
+        <div class="warning-card">
+            <div class="warning-icon">⚠️</div>
+            <h1>Eliminar Usuario</h1>
+            <p class="warning-text">
+                <strong>Nota:</strong> No se puede eliminar un usuario que tenga productos asociados.
+            </p>
+        </div>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="message message-error">
+            ⚠ {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="search-box">
+            <form action="/usuarios/eliminar_form" method="post">
+                <div class="form-field">
+                    <label class="form-label">ID del Usuario a eliminar:</label>
+                    <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button type="submit" class="btn btn-danger btn-large">
+                        🗑️ Eliminar Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/usuarios/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

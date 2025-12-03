@@ -2,19 +2,75 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Productos</title>
+    <title>Productos - Opciones</title>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Opciones de Productos</h1>
-    <ul>
-        <li><a href="/productos/crear_form">Crear Producto</a></li>
-        <li><a href="/productos/buscar_form">Buscar Producto</a></li>
-        <li><a href="/productos/listar_todos">Listar Todos los Productos</a></li>
-        <li><a href="/productos/actualizar_form">Actualizar Producto</a></li>
-        <li><a href="/productos/inactivos_form">Productos Inactivos</a></li>
-        <li><a href="/productos/eliminar_form">Eliminar producto</a></li>
-    </ul>
-    <a href="/">Volver al inicio</a>
+    <div class="container">
+        <h1>📦 Opciones de Productos</h1>
+        
+        <div class="menu-grid">
+            <a href="/productos/crear_form" class="menu-card">
+                <div class="menu-icon">➕</div>
+                <div class="menu-title">Crear Producto</div>
+                <div class="menu-desc">Agregar nuevo producto al inventario</div>
+            </a>
+            
+            <a href="/productos/buscar_form" class="menu-card">
+                <div class="menu-icon">🔍</div>
+                <div class="menu-title">Buscar Producto</div>
+                <div class="menu-desc">Buscar producto por ID o nombre</div>
+            </a>
+            
+            <a href="/productos/listar_todos" class="menu-card">
+                <div class="menu-icon">📋</div>
+                <div class="menu-title">Listar Productos</div>
+                <div class="menu-desc">Ver todos los productos activos</div>
+            </a>
+            
+            <a href="/productos/actualizar_form" class="menu-card">
+                <div class="menu-icon">✏️</div>
+                <div class="menu-title">Actualizar Producto</div>
+                <div class="menu-desc">Modificar información de producto</div>
+            </a>
+            
+            <a href="/productos/eliminar_form" class="menu-card">
+                <div class="menu-icon">🗑️</div>
+                <div class="menu-title">Eliminar Producto</div>
+                <div class="menu-desc">Marcar producto como inactivo</div>
+            </a>
+            
+            <a href="/productos/inactivos_form" class="menu-card">
+                <div class="menu-icon">📂</div>
+                <div class="menu-title">Productos Inactivos</div>
+                <div class="menu-desc">Ver y reactivar productos eliminados</div>
+            </a>
+        </div>
+        
+        <div class="quick-stats mt-30">
+            <div class="stats-title">Acceso Rápido</div>
+            <div class="stats-grid">
+                <a href="/productos/crear_form" class="stat-card stat-create">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-text">Crear Rápido</div>
+                </a>
+                <a href="/productos/listar_todos" class="stat-card stat-list">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-text">Ver Inventario</div>
+                </a>
+                <a href="/productos/inactivos_form" class="stat-card stat-inactive">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-text">Gestionar Inactivos</div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="text-center mt-30">
+            <a href="/" class="btn btn-secondary btn-large">
+                 Volver al Inicio
+            </a>
+        </div>
+    </div>
+{% include 'footer.html' %}
 </body>
 </html>

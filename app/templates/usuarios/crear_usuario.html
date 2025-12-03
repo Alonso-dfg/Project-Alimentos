@@ -6,35 +6,63 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Crear Nuevo Usuario</h1>
-
-<form action="/usuarios/crear_form" method="post" enctype="multipart/form-data">
-    <label>Nombre:</label>
-    <input type="text" name="nombre" required><br><br>
-    
-    <label>Correo:</label>
-    <input type="email" name="correo" required><br><br>
-    
-    <label>Teléfono:</label>
-    <input type="text" name="telefono" required><br><br>
-    
-    <label>Ciudad:</label>
-    <input type="text" name="ciudad" required><br><br>
-    
-    <label>Imagen (obligatoria):</label>
-    <input type="file" name="imagen" accept="image/*" required><br><br>
-    
-    <button type="submit">Crear Usuario</button>
-</form>
-
-<br>
-<a href="/usuarios/opciones">Volver a Opciones</a>
-
-{% if mensaje %}
-<p style="color: green;">{{ mensaje }}</p>
-{% endif %}
-{% if error %}
-<p style="color: red;">{{ error }}</p>
-{% endif %}
+    <div class="container form-container">
+        <h1>Crear Usuario</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <form action="/usuarios/crear_form" method="POST" enctype="multipart/form-data">
+            <div class="form-field">
+                <label class="form-label">Nombre:</label>
+                <input type="text" class="form-input" name="nombre" placeholder="Ingresa el nombre completo" required>
+            </div>
+            
+            <div class="form-field">
+                <label class="form-label">Correo:</label>
+                <input type="email" class="form-input" name="correo" placeholder="ejemplo@correo.com" required>
+                <div class="error-message">Completa este campo</div>
+            </div>
+            
+            <div class="form-field">
+                <label class="form-label">Teléfono:</label>
+                <input type="tel" class="form-input" name="telefono" placeholder="+57 300 123 4567" required>
+            </div>
+            
+            <div class="form-field">
+                <label class="form-label">Ciudad:</label>
+                <input type="text" class="form-input" name="ciudad" placeholder="Ingresa la ciudad" required>
+            </div>
+            
+            <div class="form-field">
+                <label class="form-label">Imagen (obligatoria):</label>
+                <div class="file-upload">
+                    <input type="file" id="fileInput" name="imagen" accept="image/*" required>
+                    <span>📁 Seleccionar archivo</span>
+                    <div class="file-text">Ningún archivo seleccionado</div>
+                </div>
+                <small class="text-muted mt-10" style="display: block; margin-top: 10px;">
+                    Formatos: JPG, PNG, GIF, WEBP (Max 5MB)
+                </small>
+            </div>
+            
+            <div class="text-center mt-30">
+                <button type="submit" class="btn btn-primary btn-large">
+                    ✅ Crear Usuario
+                </button>
+            </div>
+        </form>
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/usuarios/opciones" class="btn btn-secondary">
+                ← Volver a Opciones de Usuarios
+            </a>
+        </div>
+    </div>
 </body>
 </html>

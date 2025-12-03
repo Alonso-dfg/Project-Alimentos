@@ -1,27 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Buscar Categoría</title>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-<h1>Buscar Categoría</h1>
-
-<form action="/categorias/buscar" method="post">
-    <label>ID:</label>
-    <input type="number" name="id" required>
-    <button>Buscar</button>
-</form>
-
-{% if categoria %}
-<h2>Resultado:</h2>
-<p><b>ID:</b> {{ categoria.id }}</p>
-<p><b>Nombre:</b> {{ categoria.nombre }}</p>
-{% endif %}
-
-<a href="/categorias/opciones">Volver</a>
-
+    <div class="container form-container">
+        <h1>🔍 Buscar Categoría</h1>
+        
+        <div class="search-box">
+            <form action="/categorias/buscar" method="post">
+                <div class="form-field">
+                    <label class="form-label">ID de la categoría:</label>
+                    <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button type="submit" class="btn btn-primary btn-large">
+                        🔍 Buscar Categoría
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% if categoria %}
+        <div class="data-card mt-30">
+            <div class="card-header">
+                <div class="card-title">{{ categoria.nombre }}</div>
+                <div class="card-id">ID: {{ categoria.id }}</div>
+            </div>
+            
+            <div class="card-details">
+                <div class="detail-item">
+                    <div class="detail-label">ID</div>
+                    <div class="detail-value">{{ categoria.id }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Nombre</div>
+                    <div class="detail-value">{{ categoria.nombre }}</div>
+                </div>
+            </div>
+            
+            <div class="btn-group mt-30">
+                <a href="/categorias/actualizar_form?id={{ categoria.id }}" 
+                   class="btn btn-warning">
+                    ✏️ Editar Categoría
+                </a>
+                
+                <a href="/categorias/eliminar_form?id={{ categoria.id }}" 
+                   class="btn btn-danger">
+                    🗑️ Eliminar Categoría
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/categorias/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

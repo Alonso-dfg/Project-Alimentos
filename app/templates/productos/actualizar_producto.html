@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -7,42 +6,102 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Actualizar Producto ID {{ producto.id }}</h1>
-
-    {% if mensaje %}
-        <p style="color: green; font-weight: bold;">{{ mensaje }}</p>
-    {% endif %}
-
-    <form action="/productos/actualizar_form_post" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="{{ producto.id }}">
-
-        <label>Nombre:</label>
-        <input type="text" name="nombre" value="{{ producto.nombre }}"><br>
-
-        <label>Precio:</label>
-        <input type="number" step="0.01" name="precio" value="{{ producto.precio }}"><br>
-
-        <label>Cantidad:</label>
-        <input type="number" name="cantidad" value="{{ producto.cantidad }}"><br>
-
-        <label>Ciudad:</label>
-        <input type="text" name="ciudad" value="{{ producto.ciudad }}"><br>
-
-        <label>ID Categoría:</label>
-        <input type="number" name="categoria_id" value="{{ producto.categoria_id }}"><br>
-
-        <label>ID Proveedor:</label>
-        <input type="number" name="proveedor_id" value="{{ producto.proveedor_id }}"><br>
-
-        <label>ID Usuario:</label>
-        <input type="number" name="usuario_id" value="{{ producto.usuario_id }}"><br>
-
-        <label>Imagen:</label>
-        <input type="file" name="imagen"><br>
-
-        <button type="submit">Actualizar Producto</button>
-    </form>
-
-    <a href="/productos/opciones">Volver a Opciones</a>
+    <div class="container form-container">
+        <h1>Actualizar Producto ID {{ producto.id }}</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="data-card mb-30">
+            <div class="card-header">
+                <div class="card-title">Producto #{{ producto.id }}</div>
+                <div class="card-id">ID: {{ producto.id }}</div>
+            </div>
+            
+            <form action="/productos/actualizar_form_post" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{ producto.id }}">
+                
+                <div class="form-group">
+                    <div class="form-field">
+                        <label class="form-label">Nombre:</label>
+                        <input type="text" class="form-input" name="nombre" value="{{ producto.nombre }}" required>
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">Precio:</label>
+                        <input type="number" class="form-input" step="0.01" name="precio" value="{{ producto.precio }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-field">
+                        <label class="form-label">Cantidad:</label>
+                        <input type="number" class="form-input" name="cantidad" value="{{ producto.cantidad }}" required>
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">Ciudad:</label>
+                        <input type="text" class="form-input" name="ciudad" value="{{ producto.ciudad }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-field">
+                        <label class="form-label">ID Categoría:</label>
+                        <input type="number" class="form-input" name="categoria_id" value="{{ producto.categoria_id }}" required>
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">ID Proveedor:</label>
+                        <input type="number" class="form-input" name="proveedor_id" value="{{ producto.proveedor_id }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">ID Usuario:</label>
+                    <input type="number" class="form-input" name="usuario_id" value="{{ producto.usuario_id }}" required>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Imagen Actual:</label>
+                    {% if producto.imagen %}
+                    <div class="current-image">
+                        <img src="/static/images/{{ producto.imagen }}" alt="Imagen actual" class="card-image">
+                        <small class="text-muted">Imagen actual del producto</small>
+                    </div>
+                    {% else %}
+                    <div class="message message-warning">
+                        No hay imagen actual para este producto
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Nueva Imagen (opcional):</label>
+                    <div class="file-upload">
+                        <input type="file" name="imagen" accept="image/*">
+                        <span>Seleccionar nueva imagen</span>
+                        <div class="file-text">Dejar vacío para mantener la imagen actual</div>
+                    </div>
+                    <small class="text-muted mt-10">
+                        Formatos: JPG, PNG, GIF, WEBP (Max 5MB)
+                    </small>
+                </div>
+                
+                <div class="btn-group mt-30">
+                    <button type="submit" class="btn btn-warning btn-large">
+                        Actualizar Producto
+                    </button>
+                    
+                    <a href="/productos/opciones" class="btn btn-secondary">
+                        ← Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

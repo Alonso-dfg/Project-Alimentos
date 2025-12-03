@@ -6,28 +6,48 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-
-    <h1>Actualizar Categoría</h1>
-
-    <form action="/categorias/actualizar_form" method="post">
-        <label>ID de la categoría:</label><br>
-        <input type="number" name="id" required><br><br>
-
-        <label>Nuevo nombre:</label><br>
-        <input type="text" name="nombre" required><br><br>
-
-        <button type="submit">Actualizar</button>
-    </form>
-
-    <a href="/categorias/opciones">Volver a Opciones</a>
-
-    {% if mensaje %}
-        <p style="color: green; font-weight: bold;">{{ mensaje }}</p>
-    {% endif %}
-
-    {% if error %}
-        <p style="color: red; font-weight: bold;">{{ error }}</p>
-    {% endif %}
-
+    <div class="container form-container">
+        <h1>Actualizar Categoría</h1>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="message message-error">
+            ⚠ {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="search-box">
+            <form action="/categorias/actualizar_form" method="post">
+                <div class="form-field">
+                    <label class="form-label">ID de la categoría:</label>
+                    <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Nuevo nombre:</label>
+                    <input type="text" class="form-input" name="nombre" placeholder="Ingresa el nuevo nombre" required>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button type="submit" class="btn btn-warning btn-large">
+                        ✏️ Actualizar Categoría
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/categorias/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

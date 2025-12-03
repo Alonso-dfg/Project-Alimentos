@@ -6,19 +6,46 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Eliminar Categoría</h1>
-
-    <form action="/categorias/eliminar_form" method="post">
-        <label>Ingrese ID de la categoría a eliminar:</label>
-        <input type="number" name="id" placeholder="ID" required>
-        <input type="hidden" name="_method" value="DELETE">
-        <button type="submit">Eliminar</button>
-    </form>
-
-    <a href="/categorias/opciones">Volver a Opciones</a>
-
-    {% if mensaje %}
-        <p style="color: green; font-weight: bold;">{{ mensaje }}</p>
-    {% endif %}
+    <div class="container form-container">
+        <div class="warning-card">
+            <div class="warning-icon">⚠️</div>
+            <h1>Eliminar Categoría</h1>
+            <p class="warning-text">
+                Esta acción marcará la categoría como <strong>inactiva</strong>.
+                Podrás reactivarla más tarde desde la sección de categorías inactivas.
+            </p>
+        </div>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="search-box">
+            <form action="/categorias/eliminar_form" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                
+                <div class="form-field">
+                    <label class="form-label">ID de la categoría a eliminar:</label>
+                    <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button type="submit" class="btn btn-danger btn-large">
+                        🗑️ Eliminar Categoría
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/categorias/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

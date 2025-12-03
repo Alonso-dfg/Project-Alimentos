@@ -6,36 +6,80 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Categorías Inactivas</h1>
-    <a href="/categorias/opciones">Volver a Opciones</a>
-
-    {% if mensaje %}
-        <p style="color: green; font-weight: bold;">{{ mensaje }}</p>
-    {% endif %}
-
-    {% if categorias %}
-        <table border="1" cellpadding="5" cellspacing="0">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Acción</th>
-            </tr>
-            {% for c in categorias %}
-            <tr>
-                <td>{{ c.id }}</td>
-                <td>{{ c.nombre }}</td>
-                <td>
-                    <!-- Formulario pequeño para reactivar (POST) -->
-                    <form action="/categorias/reactivar_form" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="{{ c.id }}">
-                        <button type="submit">Reactivar</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No hay categorías inactivas.</p>
-    {% endif %}
+    <div class="container">
+        <h1>📂 Categorías Inactivas</h1>
+        
+        <div class="info-card">
+            <div class="info-icon">ℹ️</div>
+            <p class="info-text">
+                Estas categorías están marcadas como <strong>inactivas</strong>.
+                Puedes reactivarlas para que vuelvan a estar disponibles.
+            </p>
+        </div>
+        
+        {% if mensaje %}
+        <div class="message message-success">
+            ✅ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="text-center mb-30">
+            <div class="btn-group">
+                <a href="/categorias/opciones" class="btn btn-secondary">
+                    ← Volver a Opciones
+                </a>
+                <a href="/categorias/listar" class="btn btn-primary">
+                    📋 Ver Categorías Activas
+                </a>
+            </div>
+        </div>
+        
+        {% if categorias %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in categorias %}
+                    <tr>
+                        <td><strong>{{ c.id }}</strong></td>
+                        <td>{{ c.nombre }}</td>
+                        <td>
+                            <span class="status-badge status-inactive">
+                                ⚠️ Inactiva
+                            </span>
+                        </td>
+                        <td>
+                            <form action="/categorias/reactivar_form" method="post" class="inline-form">
+                                <input type="hidden" name="id" value="{{ c.id }}">
+                                <button type="submit" class="btn btn-success btn-small">
+                                    🔄 Reactivar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box mt-30">
+            <div class="summary-title">Resumen</div>
+            <div class="summary-content">
+                <strong>Total de categorías inactivas:</strong> {{ categorias|length }}
+            </div>
+        </div>
+        {% else %}
+        <div class="message message-info">
+            🎉 No hay categorías inactivas en este momento.
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

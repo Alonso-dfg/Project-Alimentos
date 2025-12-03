@@ -6,35 +6,103 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Buscar Producto por ID</h1>
-
-    <form action="/productos/buscar_form" method="post">
-        <label>Ingrese ID del producto:</label>
-        <input type="number" name="id" placeholder="ID" required>
-        <button type="submit">Buscar</button>
-    </form>
-
-    <a href="/productos/opciones">Volver a Opciones</a>
-
-    {% if mensaje %}
-        <p style="color: red; font-weight: bold;">{{ mensaje }}</p>
-    {% endif %}
-
-    {% if producto %}
-        <h2>Producto Encontrado:</h2>
-        <ul>
-            <li><strong>ID:</strong> {{ producto.id }}</li>
-            <li><strong>Nombre:</strong> {{ producto.nombre }}</li>
-            <li><strong>Precio:</strong> {{ producto.precio }}</li>
-            <li><strong>Cantidad:</strong> {{ producto.cantidad }}</li>
-            <li><strong>Ciudad:</strong> {{ producto.ciudad }}</li>
-            <li><strong>Categoría ID:</strong> {{ producto.categoria_id }}</li>
-            <li><strong>Proveedor ID:</strong> {{ producto.proveedor_id }}</li>
-            <li><strong>Usuario ID:</strong> {{ producto.usuario_id }}</li>
+    <div class="container form-container">
+        <h1>🔍 Buscar Producto por ID</h1>
+        
+        {% if mensaje %}
+        <div class="message message-error">
+            ⚠ {{ mensaje }}
+        </div>
+        {% endif %}
+        
+        <div class="search-box">
+            <form action="/productos/buscar_form" method="post">
+                <div class="form-field">
+                    <label class="form-label">Ingrese ID del producto:</label>
+                    <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button type="submit" class="btn btn-primary btn-large">
+                         Buscar Producto
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% if producto %}
+        <div class="data-card mt-30">
+            <div class="card-header">
+                <div class="card-title">{{ producto.nombre }}</div>
+                <div class="card-id">ID: {{ producto.id }}</div>
+            </div>
+            
+            <div class="card-details">
+                <div class="detail-item">
+                    <div class="detail-label">Precio</div>
+                    <div class="detail-value">${{ "%.2f"|format(producto.precio) }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Cantidad</div>
+                    <div class="detail-value">{{ producto.cantidad }} unidades</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Ciudad</div>
+                    <div class="detail-value">{{ producto.ciudad }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Categoría ID</div>
+                    <div class="detail-value">{{ producto.categoria_id }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Proveedor ID</div>
+                    <div class="detail-value">{{ producto.proveedor_id }}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Usuario ID</div>
+                    <div class="detail-value">{{ producto.usuario_id }}</div>
+                </div>
+            </div>
+            
             {% if producto.imagen %}
-                <li><strong>Imagen:</strong> <img src="/static/images/{{ producto.imagen }}" width="100"></li>
+            <div class="text-center mt-20">
+                <div class="detail-label">Imagen del Producto</div>
+                <img src="/static/images/{{ producto.imagen }}" 
+                     alt="{{ producto.nombre }}" 
+                     class="card-image">
+            </div>
+            {% else %}
+            <div class="message message-info mt-20">
+                 Este producto no tiene imagen
+            </div>
             {% endif %}
-        </ul>
-    {% endif %}
+            
+            <div class="btn-group mt-30">
+                <a href="/productos/actualizar_form?id={{ producto.id }}" 
+                   class="btn btn-warning">
+                     Editar Producto
+                </a>
+                
+                <a href="/productos/eliminar_form?id={{ producto.id }}" 
+                   class="btn btn-danger">
+                     Eliminar Producto
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/productos/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>

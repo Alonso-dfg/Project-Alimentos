@@ -6,21 +6,37 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-<h1>Actualizar Usuario</h1>
-<h3>Paso 1: Ingresa el ID del usuario a actualizar</h3>
-
-<form action="/usuarios/actualizar_form" method="post">
-    <label>ID del Usuario:</label>
-    <input type="number" name="id" required>
-    <button type="submit">Buscar y Editar</button>
-</form>
-
-<br>
-<a href="/usuarios/opciones">Volver a Opciones</a>
-
-{% if error %}
-<p>{{ error }}</p>
-{% endif %}
-
+    <div class="container form-container">
+        <h1>Actualizar Usuario</h1>
+        
+        {% if error %}
+        <div class="message message-error">
+            ⚠ {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="search-box">
+            <form action="/usuarios/actualizar_form" method="post">
+                <div class="form-field">
+                    <label class="form-label">ID del Usuario:</label>
+                    <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
+                </div>
+                
+                <div class="text-center mt-20">
+                    <button type="submit" class="btn btn-warning btn-large">
+                        🔍 Buscar Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <hr class="my-30">
+        
+        <div class="text-center">
+            <a href="/usuarios/opciones" class="btn btn-secondary">
+                ← Volver a Opciones
+            </a>
+        </div>
+    </div>
 </body>
 </html>
