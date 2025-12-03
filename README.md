@@ -143,5 +143,34 @@ mi-tienda/
 
 ## Despliegue en Clever Cloud
 ### 1. Crear cuenta en Clever Cloud
-<clever-cloud.com> 
+[ Clever Cloud ](https://www.clever.cloud/)
+
+### 2. Crear add-on PostgreSQL
+- Dashboard → Add-ons → PostgreSQL
+- Plan: Nano (gratuito) o superior
+- Region: Europa
+
+### 3. Configurar tu database.py
+- Copia tu *** Connection URI *** que te da clever cloud
+- Pegala en el archivo database.py en:
+```python
+SQLALCHEMY_DATABASE_URL = "postgresql://..."
+```
+
+### Endpoints
+
+### Productos
+| Método | URL | Qué hace |
+|--------|-----|----------|
+| GET | `/api/productos/`	| Listar todos los productos |
+| GET |	`/api/productos/{id}` |	Obtener un producto
+| POST | `/api/productos/` | Crear nuevo producto
+| PUT |	`/api/productos/{id}` |	Actualizar producto
+| DELETE | `/api/productos/{id}` | Eliminar producto (soft delete)
+| GET	| `/api/productos/buscar?q={texto}` |	Buscar productos
+| GET	| `/api/productos/inactivos/` |	Ver productos eliminados
+| PUT	| `/api/productos/{id}/reactivar` |	Reactivar producto
+
+
+
 
