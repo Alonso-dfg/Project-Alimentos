@@ -95,25 +95,46 @@ uvicorn app.main:app --reload
 ### Estructura del proyecto
 ```bash
 mi-tienda/
-├── app.py                  # Aplicación principal FastAPI
-├── database.py             # Configuración de base de datos
-├── models.py               # Modelos SQLAlchemy
-├── schemas.py              # Esquemas Pydantic
-├── routers/                # Routers de FastAPI
-│   ├── productos.py
-│   ├── usuarios.py
-│   ├── proveedores.py
-│   └── externos.py
-├── static/                 # Archivos estáticos
-│   ├── css/
-│   │   ├── styles.css
-│   └── img/
-├── templates/              # Plantillas HTML
-│   ├── index.html
-│   ├── productos/
-│   ├── usuarios/
-│   ├── proveedores/
-│   └── externos/
-├── requirements.txt        # Dependencias Python
-├── README.md               # Este archivo
+├── app/   # Aplicación principal
+│ ├── pycache/   # Archivos caché de Python
+│ └── models/   # Modelos de base de datos
+│ ├── pycache/
+│ ├── init.py   # Inicializador del módulo
+│ ├── categoria.py   # Modelo de categorías
+│ ├── producto.py   # Modelo de productos
+│ ├── provedor.py   # Modelo de proveedores
+│ └── usuario.py   # Modelo de usuarios
+│
+├── routers/   # Routers/Controladores de la API
+│ ├── pycache/
+│ ├── categorias.py   # Endpoints para categorías
+│ ├── externos.py   # API externa (Open Food Facts)
+│ ├── productos.py   # Endpoints para productos
+│ ├── proveedores.py   # Endpoints para proveedores
+│ └── usuarios.py   # Endpoints para usuarios
+│
+├── schemas/   # Esquemas Pydantic para validación
+│ ├── pycache/
+│ ├── categoria_schema.py   # Esquemas de categorías
+│ ├── producto_schema.py   # Esquemas de productos
+│ ├── provedor_schema.py   # Esquemas de proveedores
+│ └── usuario_schema.py   # Esquemas de usuarios
+│
+├── static/   # Archivos estáticos (CSS, JS, imágenes)
+│ └── css/
+│ └── styles.css   # Estilos CSS principales
+│
+├── templates/   # Plantillas HTML/Jinja2
+│ ├── index.html   # Página principal
+│ ├── productos/   # Templates de productos
+│ ├── usuarios/   # Templates de usuarios
+│ ├── proveedores/   # Templates de proveedores
+│ └── externos/   # Templates de API externa
+│
+│
+├── .gitignore   # Archivos ignorados por Git
+├── database.py   # Configuración y conexión a base de datos
+├── main.py   # Punto de entrada de la aplicación FastAPI
+├── requirements.txt   # Dependencias de Python
+└── README.md   # Documentación del proyecto
 ```
