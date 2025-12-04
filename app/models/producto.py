@@ -9,23 +9,22 @@ class Producto(Base):
     nombre = Column(String, index=True)
     precio = Column(Float, index=True)
     ciudad = Column(String, index=True)
-    fuente = Column(String, index=True)
     cantidad = Column(Integer)
     imagen = Column(String, nullable=True)
 
 
 
     # Relación con categoría
-    categoria_id = Column(Integer, ForeignKey("categorias.id"))
+    categoria_id = Column(Integer, ForeignKey("categorias.id"), nullable=True)
     categoria = relationship("Categoria", back_populates="productos")
     
     # Relación con proveedor
-    proveedor_id = Column(Integer, ForeignKey("proveedores.id"))
+    proveedor_id = Column(Integer, ForeignKey("proveedores.id"), nullable=True)
     proveedor = relationship("Proveedor", back_populates="productos")
 
 
     # Relación con usuario
-    usuario_id = Column(Integer, ForeignKey("usuarios.id"))
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"), nullable=True)
     usuario = relationship("Usuario", back_populates="productos")
 
 

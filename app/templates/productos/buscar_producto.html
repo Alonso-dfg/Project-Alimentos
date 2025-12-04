@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración básica del documento -->
     <meta charset="UTF-8">
     <title>Buscar Producto</title>
+
+    <!-- Enlace al archivo de estilos -->
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+
     <div class="container form-container">
         <h1>🔍 Buscar Producto por ID</h1>
-        
+
+        <!-- Si llega un mensaje de error desde el backend, se muestra aquí -->
         {% if mensaje %}
         <div class="message message-error">
             ⚠ {{ mensaje }}
         </div>
         {% endif %}
-        
+
+        <!-- Formulario donde el usuario ingresa el ID del producto a buscar -->
         <div class="search-box">
             <form action="/productos/buscar_form" method="post">
                 <div class="form-field">
                     <label class="form-label">Ingrese ID del producto:</label>
                     <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
                 </div>
-                
+
                 <div class="text-center mt-20">
                     <button type="submit" class="btn btn-primary btn-large">
                          Buscar Producto
@@ -29,46 +35,51 @@
                 </div>
             </form>
         </div>
-        
+
+        <!-- Si el backend encontró un producto, se muestra la información -->
         {% if producto %}
         <div class="data-card mt-30">
+
+            <!-- Encabezado con nombre e ID del producto -->
             <div class="card-header">
                 <div class="card-title">{{ producto.nombre }}</div>
                 <div class="card-id">ID: {{ producto.id }}</div>
             </div>
-            
+
+            <!-- Datos generales del producto -->
             <div class="card-details">
                 <div class="detail-item">
                     <div class="detail-label">Precio</div>
                     <div class="detail-value">${{ "%.2f"|format(producto.precio) }}</div>
                 </div>
-                
+
                 <div class="detail-item">
                     <div class="detail-label">Cantidad</div>
                     <div class="detail-value">{{ producto.cantidad }} unidades</div>
                 </div>
-                
+
                 <div class="detail-item">
                     <div class="detail-label">Ciudad</div>
                     <div class="detail-value">{{ producto.ciudad }}</div>
                 </div>
-                
+
                 <div class="detail-item">
                     <div class="detail-label">Categoría ID</div>
                     <div class="detail-value">{{ producto.categoria_id }}</div>
                 </div>
-                
+
                 <div class="detail-item">
                     <div class="detail-label">Proveedor ID</div>
                     <div class="detail-value">{{ producto.proveedor_id }}</div>
                 </div>
-                
+
                 <div class="detail-item">
                     <div class="detail-label">Usuario ID</div>
                     <div class="detail-value">{{ producto.usuario_id }}</div>
                 </div>
             </div>
-            
+
+            <!-- Si el producto tiene imagen, se muestra -->
             {% if producto.imagen %}
             <div class="text-center mt-20">
                 <div class="detail-label">Imagen del Producto</div>
@@ -77,32 +88,37 @@
                      class="card-image">
             </div>
             {% else %}
+            <!-- Si no tiene imagen muestra mensaje informativo-->
             <div class="message message-info mt-20">
                  Este producto no tiene imagen
             </div>
             {% endif %}
-            
+
+            <!-- Botones para editar o eliminar el producto encontrado -->
             <div class="btn-group mt-30">
                 <a href="/productos/actualizar_form?id={{ producto.id }}" 
                    class="btn btn-warning">
                      Editar Producto
                 </a>
-                
+
                 <a href="/productos/eliminar_form?id={{ producto.id }}" 
                    class="btn btn-danger">
                      Eliminar Producto
                 </a>
             </div>
+
         </div>
         {% endif %}
-        
+
         <hr class="my-30">
-        
+
+        <!-- Botón para regresar al menú de productos -->
         <div class="text-center">
             <a href="/productos/opciones" class="btn btn-secondary">
                 ← Volver a Opciones
             </a>
         </div>
     </div>
+
 </body>
 </html>

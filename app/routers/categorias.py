@@ -2,16 +2,19 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Form
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import SessionLocal
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from app.models.producto import Producto
 from app.models.categoria import Categoria
 from app.schemas.categoria_schema import CategoriaCreate, CategoriaOut, CategoriaUpdate
 
+# Este router agrupa todas las rutas relacionadas con categorías
 router = APIRouter(prefix="/categorias", tags=["Categorías"])
 
+# Carpeta donde están las plantillas HTML
 templates = Jinja2Templates(directory="app/templates")
 
+# Función que abre y cierra la conexión a la BD
 def get_db():
     db = SessionLocal()
     try:
@@ -19,36 +22,23 @@ def get_db():
     finally:
         db.close()
 
-#HTML CATEGORIAS
+# ===============================
+#   VISTAS HTML
+# ===============================
 
-
-# ---------------------------------
-# PÁGINA PRINCIPAL DE OPCIONES
-# ---------------------------------
+# Página principal con las opciones de categorías
 @router.get("/opciones", response_class=HTMLResponse)
 async def opciones_categorias(request: Request):
-    return templates.TemplateResponse(
-        "categorias/opciones.html",
-        {"request": request}
-    )
+    return templates.TemplateResponse("categorias/opciones.html", {"request": request})
 
-
-# ---------------------------------
-# FORMULARIO PARA CREAR CATEGORÍA
-# ---------------------------------
+# Muestra el formulario para crear una nueva categoría
 @router.get("/crear_form", response_class=HTMLResponse)
 async def crear_categoria_form(request: Request):
-    return templates.TemplateResponse(
-        "categorias/crear_categoria.html",
-        {"request": request}
-    )
+    return templates.TemplateResponse("categorias/crear_categoria.html", {"request": request})
 
-
+# Recibe el formulario y crea una categoría
 @router.post("/crear", response_class=HTMLResponse)
-async def crear_categoria_html(
-    request: Request,
-    nombre: str = Form(...),
-):
+async def crear_categoria_html(request: Request, nombre: str = Form(...)):
     db = SessionLocal()
 
     nueva = Categoria(nombre=nombre)
@@ -62,10 +52,7 @@ async def crear_categoria_html(
         {"request": request, "mensaje": "Categoría creada exitosamente"}
     )
 
-
-# ---------------------------------
-# LISTAR CATEGORÍAS ACTIVAS (HTML)
-# ---------------------------------
+# Lista todas las categorías activas en una página HTML
 @router.get("/listar", response_class=HTMLResponse)
 async def listar_categorias_html(request: Request):
     db = SessionLocal()
@@ -77,10 +64,7 @@ async def listar_categorias_html(request: Request):
         {"request": request, "categorias": categorias}
     )
 
-
-# ---------------------------------
-# LISTAR INACTIVAS
-# ---------------------------------
+# Lista categorías inactivas
 @router.get("/inactivas", response_class=HTMLResponse)
 async def listar_inactivas_html(request: Request):
     db = SessionLocal()
@@ -92,11 +76,13 @@ async def listar_inactivas_html(request: Request):
         {"request": request, "categorias": categorias}
     )
 
+# Reactivar categoría desde un formulario
 @router.post("/reactivar_form", response_class=HTMLResponse)
 async def reactivar_categoria_form(request: Request, id: int = Form(...)):
     db = SessionLocal()
     categoria = db.query(Categoria).filter(Categoria.id == id).first()
 
+    # Si no existe, retorno mensaje
     if not categoria:
         categorias = db.query(Categoria).filter(Categoria.estado == "inactivo").all()
         db.close()
@@ -106,11 +92,12 @@ async def reactivar_categoria_form(request: Request, id: int = Form(...)):
             "mensaje": f"No se encontró categoría con ID {id}"
         })
 
+    # Se activa la categoría
     categoria.estado = "activo"
     db.commit()
     db.refresh(categoria)
 
-    # obtener lista actualizada
+    # Se recarga la lista actualizada
     categorias = db.query(Categoria).filter(Categoria.estado == "inactivo").all()
     db.close()
 
@@ -120,23 +107,14 @@ async def reactivar_categoria_form(request: Request, id: int = Form(...)):
         "mensaje": f"Categoría ID {id} reactivada correctamente!"
     })
 
-
-# ---------------------------------
-# BUSCAR POR ID
-# ---------------------------------
+# Formulario para buscar categoría por ID
 @router.get("/buscar_form", response_class=HTMLResponse)
 async def buscar_categoria_form(request: Request):
-    return templates.TemplateResponse(
-        "categorias/buscar_categoria.html",
-        {"request": request}
-    )
+    return templates.TemplateResponse("categorias/buscar_categoria.html", {"request": request})
 
-
+# Busca la categoría ingresada por ID
 @router.post("/buscar", response_class=HTMLResponse)
-async def buscar_categoria_html(
-    request: Request,
-    id: int = Form(...)
-):
+async def buscar_categoria_html(request: Request, id: int = Form(...)):
     db = SessionLocal()
     categoria = db.query(Categoria).filter(Categoria.id == id).first()
     db.close()
@@ -146,57 +124,45 @@ async def buscar_categoria_html(
         {"request": request, "categoria": categoria}
     )
 
-# HTML: formulario para eliminar categoría (GET)
+# ------------------------------
+#    ELIMINAR (HTML)
+# ------------------------------
 @router.get("/eliminar_form", response_class=HTMLResponse)
 async def eliminar_categoria_form(request: Request):
     return templates.TemplateResponse("categorias/eliminar_categoria.html", {"request": request})
 
+@router.post("/eliminar_form", response_class=HTMLResponse)
+async def eliminar_categoria_post(request: Request, id: int = Form(...), db: Session = Depends(get_db)):
+    categoria = db.query(Categoria).filter(Categoria.id == id).first()
 
-@router.post("/eliminar_form")
-async def eliminar_categoria_form(request: Request, db: Session = Depends(get_db)):
-    form = await request.form()
-
-    categoria_id = int(form.get("id"))
-    method = form.get("_method")
-
-    # Validamos que el form pidió un DELETE
-    if method != "DELETE":
-        return templates.TemplateResponse(
-            "categorias/eliminar_categoria.html",
-            {"request": request, "mensaje": "Método inválido"}
-        )
-
-    # Buscar la categoría
-    categoria = db.query(Categoria).filter(Categoria.id == categoria_id).first()
+    # Si no existe, aviso
     if not categoria:
-        return templates.TemplateResponse(
-            "categorias/eliminar_categoria.html",
-            {"request": request, "mensaje": "Categoría no encontrada"}
-        )
+        return templates.TemplateResponse("categorias/eliminar_categoria.html", {
+            "request": request,
+            "mensaje": "Categoría no encontrada"
+        })
 
-    # Validar si tiene productos asociados
-    productos_asociados = db.query(Producto).filter(Producto.categoria_id == categoria_id).first()
-    
-    if productos_asociados:
-        return templates.TemplateResponse(
-            "categorias/eliminar_categoria.html",
-            {
-                "request": request,
-                "mensaje": "No se puede eliminar: tiene productos asociados."
-            }
-        )
+    # Solo se permite eliminar si no tiene productos activos
+    productos_activos = db.query(Producto).filter(
+        Producto.categoria_id == id,
+        Producto.estado == "activo"
+    ).first()
 
-    # Eliminar (cambiar estado)
+    if productos_activos:
+        return templates.TemplateResponse("categorias/eliminar_categoria.html", {
+            "request": request,
+            "mensaje": "No se puede eliminar: categoría asociada a productos ACTIVOS."
+        })
+
+    # Se pasa a inactiva
     categoria.estado = "inactivo"
     db.commit()
 
-    return templates.TemplateResponse(
-        "categorias/eliminar_categoria.html",
-        {"request": request, "mensaje": "Categoría eliminada correctamente"}
-    )
+    return RedirectResponse("/categorias/listar", status_code=303)
 
-# Actualziar categoria (GET)
-
+# ------------------------------
+#    ACTUALIZAR (HTML)
+# ------------------------------
 @router.get("/actualizar_form")
 def actualizar_categoria_form_page(request: Request):
     return templates.TemplateResponse(
@@ -204,36 +170,25 @@ def actualizar_categoria_form_page(request: Request):
         {"request": request}
     )
 
-# Actualizar categoria (POST)
-
 @router.post("/actualizar_form")
-def actualizar_categoria_form(
-    request: Request,
-    id: int = Form(...),
-    nombre: str = Form(...),
-    db: Session = Depends(get_db)
-):
+def actualizar_categoria_form(request: Request, id: int = Form(...), nombre: str = Form(...), db: Session = Depends(get_db)):
     try:
-        respuesta = actualizar_categoria(id, CategoriaUpdate(nombre=nombre), db)
-        mensaje = "Categoría actualizada correctamente"
+        actualizar_categoria(id, CategoriaUpdate(nombre=nombre), db)
         return templates.TemplateResponse(
             "categorias/actualizar_categoria.html",
-            {"request": request, "mensaje": mensaje}
+            {"request": request, "mensaje": "Categoría actualizada correctamente"}
         )
     except HTTPException as e:
         return templates.TemplateResponse(
             "categorias/actualizar_categoria.html",
             {"request": request, "error": e.detail}
         )
-    
 
+# ==================================================
+#                API (JSON)
+# ==================================================
 
-
-
-
-    
-
-# Crear categoría
+# Crear categoría (JSON)
 @router.post("/", response_model=CategoriaOut)
 def crear_categoria(categoria: CategoriaCreate, db: Session = Depends(get_db)):
     nueva = Categoria(**categoria.dict())
@@ -242,29 +197,27 @@ def crear_categoria(categoria: CategoriaCreate, db: Session = Depends(get_db)):
     db.refresh(nueva)
     return nueva
 
-
 # Listar categorías activas
 @router.get("/", response_model=List[CategoriaOut])
 def listar_categorias(db: Session = Depends(get_db)):
     return db.query(Categoria).filter(Categoria.estado == "activo").all()
 
-
-# Listar categorías inactivas
+# Listar inactivas
 @router.get("/inactivos", response_model=List[CategoriaOut])
 def listar_categorias_inactivas(db: Session = Depends(get_db)):
     return db.query(Categoria).filter(Categoria.estado == "inactivo").all()
-
 
 # Buscar categoría por ID
 @router.get("/detalle/{id}", response_model=CategoriaOut)
 def obtener_categoria(id: int, db: Session = Depends(get_db)):
     categoria = db.query(Categoria).filter(Categoria.id == id).first()
+
     if not categoria:
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
+
     return categoria
 
-
-# Eliminar categoría (pasar a inactiva)
+# Eliminar categoría (API)
 @router.delete("/{categoria_id}")
 def eliminar_categoria(categoria_id: int, db: Session = Depends(get_db)):
     categoria = db.query(Categoria).filter(Categoria.id == categoria_id).first()
@@ -284,7 +237,6 @@ def eliminar_categoria(categoria_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"mensaje": "Categoría eliminada correctamente"}
 
-
 # Reactivar categoría
 @router.put("/reactivar/{id}", response_model=CategoriaOut)
 def reactivar_categoria(id: int, db: Session = Depends(get_db)):
@@ -302,13 +254,9 @@ def reactivar_categoria(id: int, db: Session = Depends(get_db)):
 
     return categoria
 
-# Actualizar categoria
+# Actualizar categoría
 @router.put("/actualizar/{categoria_id}", response_model=CategoriaOut)
-def actualizar_categoria(
-    categoria_id: int,
-    datos: CategoriaUpdate,
-    db: Session = Depends(get_db)
-):
+def actualizar_categoria(categoria_id: int, datos: CategoriaUpdate, db: Session = Depends(get_db)):
     categoria = db.query(Categoria).filter(Categoria.id == categoria_id).first()
 
     if not categoria:

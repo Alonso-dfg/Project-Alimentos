@@ -1,28 +1,32 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- Página HTML -->
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Categorías Inactivas</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <meta charset="UTF-8"> <!-- Permite caracteres especiales -->
+    <title>Categorías Inactivas</title> <!-- Título de la pestaña -->
+    <link rel="stylesheet" href="/static/css/styles.css"> <!-- Estilos -->
 </head>
 <body>
-    <div class="container">
+    <div class="container"> <!-- Contenedor principal -->
         <h1>📂 Categorías Inactivas</h1>
         
+        <!-- Tarjeta informativa -->
         <div class="info-card">
-            <div class="info-icon">ℹ️</div>
+            <div class="info-icon">ℹ️</div> <!-- Ícono -->
             <p class="info-text">
+                <!-- Explicación de la vista -->
                 Estas categorías están marcadas como <strong>inactivas</strong>.
-                Puedes reactivarlas para que vuelvan a estar disponibles.
+                Puedes reactivarlas.
             </p>
         </div>
         
         {% if mensaje %}
+        <!-- Mensaje de éxito -->
         <div class="message message-success">
             ✅ {{ mensaje }}
         </div>
         {% endif %}
         
+        <!-- Botones para navegar -->
         <div class="text-center mb-30">
             <div class="btn-group">
                 <a href="/categorias/opciones" class="btn btn-secondary">
@@ -35,27 +39,30 @@
         </div>
         
         {% if categorias %}
+        <!-- Tabla con categorías inactivas -->
         <div class="table-container">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>ID</th> <!-- Identificador -->
+                        <th>Nombre</th> <!-- Nombre de la categoría -->
+                        <th>Estado</th> <!-- Estado actual -->
+                        <th>Acciones</th> <!-- Botones -->
                     </tr>
                 </thead>
                 <tbody>
                     {% for c in categorias %}
                     <tr>
-                        <td><strong>{{ c.id }}</strong></td>
-                        <td>{{ c.nombre }}</td>
+                        <td><strong>{{ c.id }}</strong></td> <!-- ID -->
+                        <td>{{ c.nombre }}</td> <!-- Nombre -->
                         <td>
+                            <!-- Etiqueta visual de inactiva -->
                             <span class="status-badge status-inactive">
                                 ⚠️ Inactiva
                             </span>
                         </td>
                         <td>
+                            <!-- Formulario para reactivar -->
                             <form action="/categorias/reactivar_form" method="post" class="inline-form">
                                 <input type="hidden" name="id" value="{{ c.id }}">
                                 <button type="submit" class="btn btn-success btn-small">
@@ -69,13 +76,16 @@
             </table>
         </div>
         
+        <!-- Resumen de total -->
         <div class="summary-box mt-30">
             <div class="summary-title">Resumen</div>
             <div class="summary-content">
                 <strong>Total de categorías inactivas:</strong> {{ categorias|length }}
             </div>
         </div>
+
         {% else %}
+        <!-- Mensaje cuando no hay categorías inactivas -->
         <div class="message message-info">
             🎉 No hay categorías inactivas en este momento.
         </div>

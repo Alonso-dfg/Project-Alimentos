@@ -3,43 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Productos - Opciones</title>
+
+    <!-- Archivo de estilos principal -->
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
     <div class="container">
+
+        <!-- Título principal -->
         <h1>📦 Opciones de Productos</h1>
         
+        <!-- Contenedor con las tarjetas del menú -->
         <div class="menu-grid">
+
+            <!-- Opción: Crear producto -->
             <a href="/productos/crear_form" class="menu-card">
                 <div class="menu-icon">➕</div>
                 <div class="menu-title">Crear Producto</div>
                 <div class="menu-desc">Agregar nuevo producto al inventario</div>
             </a>
             
+            <!-- Opción: Buscar producto -->
             <a href="/productos/buscar_form" class="menu-card">
                 <div class="menu-icon">🔍</div>
                 <div class="menu-title">Buscar Producto</div>
                 <div class="menu-desc">Buscar producto por ID o nombre</div>
             </a>
             
+            <!-- Opción: Listar productos activos -->
             <a href="/productos/listar_todos" class="menu-card">
                 <div class="menu-icon">📋</div>
                 <div class="menu-title">Listar Productos</div>
                 <div class="menu-desc">Ver todos los productos activos</div>
             </a>
             
+            <!-- Opción: Actualizar producto -->
             <a href="/productos/actualizar_form" class="menu-card">
                 <div class="menu-icon">✏️</div>
                 <div class="menu-title">Actualizar Producto</div>
                 <div class="menu-desc">Modificar información de producto</div>
             </a>
             
+            <!-- Opción: Eliminar producto -->
             <a href="/productos/eliminar_form" class="menu-card">
                 <div class="menu-icon">🗑️</div>
                 <div class="menu-title">Eliminar Producto</div>
                 <div class="menu-desc">Marcar producto como inactivo</div>
             </a>
             
+            <!-- Opción: Productos inactivos -->
             <a href="/productos/inactivos_form" class="menu-card">
                 <div class="menu-icon">📂</div>
                 <div class="menu-title">Productos Inactivos</div>
@@ -47,30 +59,42 @@
             </a>
         </div>
         
+        <!-- Sección de accesos rápidos -->
         <div class="quick-stats mt-30">
             <div class="stats-title">Acceso Rápido</div>
+
             <div class="stats-grid">
+
+                <!-- Atajo rápido para crear -->
                 <a href="/productos/crear_form" class="stat-card stat-create">
                     <div class="stat-icon">⚡</div>
                     <div class="stat-text">Crear Rápido</div>
                 </a>
+
+                <!-- Atajo para ver inventario -->
                 <a href="/productos/listar_todos" class="stat-card stat-list">
                     <div class="stat-icon">📊</div>
                     <div class="stat-text">Ver Inventario</div>
                 </a>
+
+                <!-- Atajo para gestionar los inactivos -->
                 <a href="/productos/inactivos_form" class="stat-card stat-inactive">
                     <div class="stat-icon">🔄</div>
                     <div class="stat-text">Gestionar Inactivos</div>
                 </a>
+
             </div>
         </div>
         
+        <!-- Botón para volver al inicio -->
         <div class="text-center mt-30">
             <a href="/" class="btn btn-secondary btn-large">
                  Volver al Inicio
             </a>
         </div>
     </div>
-{% include 'footer.html' %}
+
+    <!-- Se incluye el footer desde un archivo aparte -->
+    {% include 'footer.html' %}
 </body>
 </html>

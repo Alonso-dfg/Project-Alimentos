@@ -15,16 +15,16 @@
                 Podrás reactivarlo más tarde desde la sección de proveedores inactivos.
             </p>
         </div>
-        
+    
         {% if mensaje %}
-        <div class="message message-success">
-            ✅ {{ mensaje }}
+        <div class="message message-error">
+            ⚠ {{ mensaje }}
         </div>
         {% endif %}
         
         {% if error %}
-        <div class="message message-error">
-            ⚠ {{ error }}
+        <div class="message message-success">
+            ✅ {{ error }}
         </div>
         {% endif %}
         

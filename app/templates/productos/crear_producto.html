@@ -8,62 +8,97 @@
 <body>
     <div class="container form-container">
         <h1>Crear Producto</h1>
-        
+
+    <!-- Mensaje de error si algo sale mal -->
+    {% if mensaje_error %}
+    <div class="message message-error">
+        {{ mensaje_error }}
+    </div>
+    {% endif %}
+
+    <!-- Mensaje de éxito si el producto se creó correctamente -->
+    {% if mensaje_exito %}
+    <div class="message message-success">
+        {{ mensaje_exito }}
+    </div>
+    {% endif %}
+    
+        <!-- Mensaje adicional (si lo usas en el backend) -->
         {% if mensaje %}
         <div class="message message-success">
             {{ mensaje }}
         </div>
         {% endif %}
         
+        <!-- Formulario para crear un nuevo producto -->
         <form action="/productos/crear_form" method="POST" enctype="multipart/form-data">
+            
+            <!-- Nombre del producto -->
             <div class="form-field">
                 <label class="form-label">Nombre:</label>
                 <input type="text" class="form-input" name="nombre" placeholder="Ingresa el nombre" required>
             </div>
             
+            <!-- Precio del producto -->
             <div class="form-field">
                 <label class="form-label">Precio:</label>
                 <input type="number" class="form-input" name="precio" placeholder="Ej: 19.99" step="0.01" min="0.01" required>
                 <div class="error-message">⚠ Completa este campo</div>
             </div>
             
+            <!-- Cantidad disponible -->
             <div class="form-field">
                 <label class="form-label">Cantidad:</label>
                 <input type="number" class="form-input" name="cantidad" placeholder="Ej: 10" min="1" required>
             </div>
             
+            <!-- Ciudad del producto -->
             <div class="form-field">
                 <label class="form-label">Ciudad:</label>
                 <input type="text" class="form-input" name="ciudad" placeholder="Ingresa la ciudad" required>
             </div>
             
+            <!-- ID de la categoría (FK) -->
             <div class="form-field">
                 <label class="form-label">ID Categoría:</label>
                 <input type="number" class="form-input" name="categoria_id" placeholder="Ej: 1" min="1" required>
             </div>
             
+            <!-- ID del proveedor (FK) -->
             <div class="form-field">
                 <label class="form-label">ID Proveedor:</label>
                 <input type="number" class="form-input" name="proveedor_id" placeholder="Ej: 1" min="1" required>
             </div>
             
+            <!-- ID del usuario que registra el producto -->
             <div class="form-field">
                 <label class="form-label">ID Usuario:</label>
-                <input type="number" class="form-input" name="usuario_id" placeholder="Ej: 1" min="1" required>
+                <input type="number" class="form-input" name="usuario_id" placeholder="Ej: 1" min="1">
             </div>
             
+            <!-- Subir imagen -->
             <div class="form-field">
                 <label class="form-label">Imagen:</label>
+
+                <!-- Contenedor personalizado del input file -->
                 <div class="file-upload">
+                    <!-- Input real que envía la imagen -->
                     <input type="file" id="fileInput" name="imagen" accept="image/*" required>
+
+                    <!-- Botón visual para seleccionar archivo -->
                     <span> Seleccionar archivo</span>
+
+                    <!-- Texto que muestra si se seleccionó un archivo -->
                     <div class="file-text">Ningún archivo seleccionado</div>
                 </div>
+
+                <!-- Nota sobre formatos permitidos -->
                 <small class="text-muted mt-10" style="display: block; margin-top: 10px;">
                     Formatos: JPG, PNG, GIF, WEBP (Max 5MB)
                 </small>
             </div>
             
+            <!-- Botón para enviar formulario -->
             <div class="text-center mt-30">
                 <button type="submit" class="btn btn-primary btn-large">
                      Crear Producto
@@ -72,7 +107,8 @@
         </form>
         
         <hr class="my-30">
-        
+
+        <!-- Botón para volver al menú -->
         <div class="text-center">
             <a href="/productos/opciones" class="btn btn-secondary">
                 ← Volver a Opciones de Productos

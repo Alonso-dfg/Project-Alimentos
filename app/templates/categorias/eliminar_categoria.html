@@ -1,36 +1,43 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- Página HTML -->
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Eliminar Categoría</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <meta charset="UTF-8"> <!-- Permite tildes -->
+    <title>Eliminar Categoría</title> <!-- Título de la pestaña -->
+    <link rel="stylesheet" href="/static/css/styles.css"> <!-- Archivo de estilos -->
 </head>
 <body>
-    <div class="container form-container">
+    <div class="container form-container"> <!-- Contenedor principal -->
+
+        <!-- Tarjeta de advertencia -->
         <div class="warning-card">
-            <div class="warning-icon">⚠️</div>
+            <div class="warning-icon">⚠️</div> <!-- Ícono de alerta -->
             <h1>Eliminar Categoría</h1>
             <p class="warning-text">
-                Esta acción marcará la categoría como <strong>inactiva</strong>.
-                Podrás reactivarla más tarde desde la sección de categorías inactivas.
+                <!-- Texto explicando lo que pasa al eliminar -->
+                Esta acción marca la categoría como <strong>inactiva</strong>.
+                Luego se puede reactivar.
             </p>
         </div>
         
         {% if mensaje %}
-        <div class="message message-success">
-            ✅ {{ mensaje }}
+        <!-- Mensaje que envía el backend (éxito o error) -->
+        <div class="message {% if 'No se puede' in mensaje or 'no encontrada' in mensaje %}message-error{% else %}message-success{% endif %}">
+            {% if 'No se puede' in mensaje or 'no encontrada' in mensaje %}⚠️{% else %}✅{% endif %} 
+            {{ mensaje }} <!-- Texto del mensaje -->
         </div>
         {% endif %}
         
         <div class="search-box">
+            <!-- Formulario para eliminar -->
             <form action="/categorias/eliminar_form" method="post">
-                <input type="hidden" name="_method" value="DELETE">
                 
                 <div class="form-field">
                     <label class="form-label">ID de la categoría a eliminar:</label>
+                    <!-- Campo donde se escribe el ID -->
                     <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
                 </div>
                 
+                <!-- Botón rojo de eliminar -->
                 <div class="text-center mt-20">
                     <button type="submit" class="btn btn-danger btn-large">
                         🗑️ Eliminar Categoría
@@ -39,8 +46,9 @@
             </form>
         </div>
         
-        <hr class="my-30">
+        <hr class="my-30"> <!-- Línea separadora -->
         
+        <!-- Botón para regresar -->
         <div class="text-center">
             <a href="/categorias/opciones" class="btn btn-secondary">
                 ← Volver a Opciones

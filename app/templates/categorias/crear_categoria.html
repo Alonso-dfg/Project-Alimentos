@@ -1,26 +1,32 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- Página HTML -->
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Crear Categoría</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <meta charset="UTF-8"> <!-- Permite tildes -->
+    <title>Crear Categoría</title> <!-- Nombre de la pestaña -->
+    <link rel="stylesheet" href="/static/css/styles.css"> <!-- Estilos -->
 </head>
 <body>
-    <div class="container form-container">
+    
+    <div class="container form-container"> <!-- Contenedor principal -->
         <h1>➕ Crear Categoría</h1>
-        
+
         {% if mensaje %}
         <div class="message message-success">
+            <!-- Mensaje enviado desde el backend -->
             ✅ {{ mensaje }}
         </div>
         {% endif %}
         
+        <!-- Formulario para crear la categoría -->
         <form action="/categorias/crear" method="post">
+            
             <div class="form-field">
                 <label class="form-label">Nombre:</label>
-                <input type="text" class="form-input" name="nombre" placeholder="Ingresa el nombre de la categoría" required>
+                <!-- Campo donde se escribe el nombre -->
+                <input type="text" class="form-input" name="nombre" required>
             </div>
             
+            <!-- Botón para enviar -->
             <div class="text-center mt-30">
                 <button type="submit" class="btn btn-primary btn-large">
                     ✅ Crear Categoría
@@ -28,13 +34,15 @@
             </div>
         </form>
         
-        <hr class="my-30">
+        <hr class="my-30"> <!-- Línea separadora -->
         
+        <!-- Botón para volver -->
         <div class="text-center">
             <a href="/categorias/opciones" class="btn btn-secondary">
                 ← Volver a Opciones
             </a>
         </div>
     </div>
+
 </body>
 </html>

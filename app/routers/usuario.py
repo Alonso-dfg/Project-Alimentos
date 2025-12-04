@@ -10,23 +10,33 @@ from app.schemas.usuario_schema import UsuarioCreate, UsuarioOut
 import shutil, uuid, os
 from pydantic import EmailStr
 
+# Asegura que exista la carpeta donde se guardan las imágenes
 os.makedirs("app/static/images", exist_ok=True)
 
+# Declaración del router
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
+
+# Motor de plantillas HTML
 templates = Jinja2Templates(directory="app/templates")
 
-# ========== RUTAS HTML (¡PRIMERO!) ==========
 
+# ============================================================
+#                     RUTAS HTML (INTERFAZ WEB)
+# ============================================================
+
+# Pantalla principal de usuarios
 @router.get("/opciones", response_class=HTMLResponse)
 async def opciones_usuarios(request: Request):
     return templates.TemplateResponse("usuarios/opciones.html", {"request": request})
 
-# Crear usuario (GET)
+
+# Formulario para crear usuario
 @router.get("/crear_form", response_class=HTMLResponse)
 async def crear_usuario_form(request: Request):
     return templates.TemplateResponse("usuarios/crear_usuario.html", {"request": request})
 
-# Listar usuarios activos
+
+# Listado de usuarios activos
 @router.get("/listar_form", response_class=HTMLResponse)
 async def listar_usuarios_html(request: Request, db: Session = Depends(get_db)):
     usuarios = db.query(Usuario).filter(Usuario.estado == "activo").all()
@@ -35,7 +45,8 @@ async def listar_usuarios_html(request: Request, db: Session = Depends(get_db)):
         "usuarios": usuarios
     })
 
-# Listar usuarios inactivos
+
+# Listado de usuarios inactivos
 @router.get("/inactivos_form", response_class=HTMLResponse)
 async def listar_inactivos_html(request: Request, db: Session = Depends(get_db)):
     usuarios = db.query(Usuario).filter(Usuario.estado == "inactivo").all()
@@ -44,24 +55,30 @@ async def listar_inactivos_html(request: Request, db: Session = Depends(get_db))
         "usuarios": usuarios
     })
 
-# Buscar usuario por ID (GET)
+
+# Formulario para buscar usuario por ID
 @router.get("/buscar_form", response_class=HTMLResponse)
 async def buscar_usuario_form(request: Request):
     return templates.TemplateResponse("usuarios/buscar_usuario.html", {"request": request})
 
-# Actualizar usuario (GET - formulario para ingresar ID)
+
+# Formulario para ingresar ID antes de actualizar
 @router.get("/actualizar_form", response_class=HTMLResponse)
 async def actualizar_usuario_form_id(request: Request):
     return templates.TemplateResponse("usuarios/actualizar_usuario_id.html", {"request": request})
 
-# Eliminar usuario (GET)
+
+# Formulario para eliminar usuario
 @router.get("/eliminar_form", response_class=HTMLResponse)
 async def eliminar_usuario_form(request: Request):
     return templates.TemplateResponse("usuarios/eliminar_usuario.html", {"request": request})
 
-# ========== RUTAS POST HTML ==========
 
-# Crear usuario (POST)
+# ============================================================
+#                     RUTAS POST (FORMULARIOS HTML)
+# ============================================================
+
+# Crear usuario desde formulario HTML
 @router.post("/crear_form", response_class=HTMLResponse)
 async def crear_usuario_html(
     request: Request,
@@ -73,7 +90,7 @@ async def crear_usuario_html(
     db: Session = Depends(get_db)
 ):
     try:
-        # Verificar si el correo ya existe
+        # Verifica que el correo no esté repetido
         existente = db.query(Usuario).filter(Usuario.correo == correo).first()
         if existente:
             return templates.TemplateResponse("usuarios/crear_usuario.html", {
@@ -81,7 +98,7 @@ async def crear_usuario_html(
                 "error": "El correo ya está registrado"
             })
         
-        # Guardar imagen
+        # Guarda la imagen
         extension = imagen.filename.split(".")[-1]
         filename = f"{uuid.uuid4()}.{extension}"
         file_location = f"app/static/images/{filename}"
@@ -89,7 +106,7 @@ async def crear_usuario_html(
         with open(file_location, "wb") as buffer:
             shutil.copyfileobj(imagen.file, buffer)
         
-        # Crear usuario
+        # Crea el usuario nuevo
         nuevo = Usuario(
             nombre=nombre,
             correo=correo,
@@ -114,7 +131,8 @@ async def crear_usuario_html(
             "error": f"Error al crear usuario: {str(e)}"
         })
 
-# Buscar usuario por ID (POST)
+
+# Buscar usuario por ID
 @router.post("/buscar_form", response_class=HTMLResponse)
 async def buscar_usuario_html(
     request: Request,
@@ -128,7 +146,8 @@ async def buscar_usuario_html(
         "mensaje": "Usuario no encontrado" if not usuario else None
     })
 
-# Actualizar usuario (POST - mostrar datos actuales)
+
+# Muestra datos actuales antes de actualizar
 @router.post("/actualizar_form", response_class=HTMLResponse)
 async def mostrar_usuario_actualizar(
     request: Request,
@@ -147,7 +166,8 @@ async def mostrar_usuario_actualizar(
         "usuario": usuario
     })
 
-# Actualizar usuario (POST - procesar actualización)
+
+# Actualiza datos del usuario desde formulario
 @router.post("/actualizar_form_post", response_class=HTMLResponse)
 async def actualizar_usuario_html(
     request: Request,
@@ -167,11 +187,11 @@ async def actualizar_usuario_html(
             "error": f"No se encontró usuario con ID {id}"
         })
     
-    # Actualizar campos si se enviaron
+    # Actualiza campos si fueron enviados
     if nombre:
         usuario.nombre = nombre
     if correo:
-        # Verificar si el nuevo correo ya existe (excepto para este mismo usuario)
+        # Valida que el nuevo correo no sea de otro usuario
         otro_usuario = db.query(Usuario).filter(
             Usuario.correo == correo, 
             Usuario.id != id
@@ -188,7 +208,7 @@ async def actualizar_usuario_html(
     if ciudad:
         usuario.ciudad = ciudad
     
-    # Actualizar imagen si se envió
+    # Reemplaza la imagen si se envió una nueva
     if imagen and imagen.filename:
         extension = imagen.filename.split(".")[-1]
         filename = f"{uuid.uuid4()}.{extension}"
@@ -207,7 +227,8 @@ async def actualizar_usuario_html(
         "mensaje": "Usuario actualizado exitosamente!"
     })
 
-# Eliminar usuario (POST) - CON VALIDACIÓN DE PRODUCTOS
+
+# Eliminar usuario con validación de productos activos relacionados
 @router.post("/eliminar_form", response_class=HTMLResponse)
 async def eliminar_usuario_html(
     request: Request,
@@ -222,15 +243,19 @@ async def eliminar_usuario_html(
             "error": f"No se encontró usuario con ID {id}"
         })
     
-    # VALIDAR SI TIENE PRODUCTOS ASOCIADOS
-    productos = db.query(Producto).filter(Producto.usuario_id == id).first()
-    if productos:
+    # Solo productos activos impiden la eliminación
+    relacionado = db.query(Producto).filter(
+        Producto.usuario_id == id,
+        Producto.estado == "activo"
+    ).first()
+    
+    if relacionado:
         return templates.TemplateResponse("usuarios/eliminar_usuario.html", {
             "request": request,
-            "error": "No se puede eliminar: el usuario tiene productos asociados."
+            "error": "No se puede eliminar: usuario asociado a productos ACTIVOS."
         })
     
-    # Cambiar estado a inactivo (eliminación lógica)
+    # Marca el usuario como inactivo
     usuario.estado = "inactivo"
     db.commit()
     
@@ -239,7 +264,8 @@ async def eliminar_usuario_html(
         "mensaje": f"Usuario '{usuario.nombre}' eliminado correctamente"
     })
 
-# Reactivar usuario (POST)
+
+# Reactivar usuario inactivo
 @router.post("/reactivar_form", response_class=HTMLResponse)
 async def reactivar_usuario_html(
     request: Request,
@@ -274,9 +300,12 @@ async def reactivar_usuario_html(
         "mensaje": f"Usuario '{usuario.nombre}' reactivado correctamente"
     })
 
-# ========== RUTAS API (¡DESPUÉS!) ==========
 
-# CREAR USUARIO CON IMAGEN (API)
+# ============================================================
+#                    RUTAS API (JSON)
+# ============================================================
+
+# Crear usuario desde la API
 @router.post("/api", response_model=UsuarioOut)
 async def crear_usuario_api(
     nombre: str = Form(...),
@@ -286,10 +315,12 @@ async def crear_usuario_api(
     imagen: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
+    # Verifica duplicado
     existente = db.query(Usuario).filter(Usuario.correo == correo).first()
     if existente:
         raise HTTPException(status_code=400, detail="El correo ya está registrado")
 
+    # Guarda la imagen
     extension = imagen.filename.split(".")[-1]
     filename = f"{uuid.uuid4()}.{extension}"
     file_location = f"app/static/images/{filename}"
@@ -297,6 +328,7 @@ async def crear_usuario_api(
     with open(file_location, "wb") as buffer:
         shutil.copyfileobj(imagen.file, buffer)
 
+    # Crea usuario
     nuevo = Usuario(
         nombre=nombre,
         correo=correo,
@@ -311,16 +343,20 @@ async def crear_usuario_api(
 
     return nuevo
 
+
+# Listar usuarios activos API
 @router.get("/api", response_model=List[UsuarioOut])
 def listar_usuarios_api(db: Session = Depends(get_db)):
     return db.query(Usuario).filter(Usuario.estado == "activo").all()
 
+
+# Listar usuarios inactivos API
 @router.get("/api/inactivos", response_model=List[UsuarioOut])
 def listar_usuarios_inactivos_api(db: Session = Depends(get_db)):
     return db.query(Usuario).filter(Usuario.estado == "inactivo").all()
 
-# ========== RUTA DINÁMICA (¡ÚLTIMA!) ==========
 
+# Obtener usuario por ID
 @router.get("/api/{usuario_id}", response_model=UsuarioOut)
 def obtener_usuario_api(usuario_id: int, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
@@ -328,7 +364,8 @@ def obtener_usuario_api(usuario_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return usuario
 
-# ACTUALIZAR USUARIO CON IMAGEN (API)
+
+# Actualizar usuario API
 @router.put("/api/{usuario_id}", response_model=UsuarioOut)
 async def actualizar_usuario_api(
     usuario_id: int,
@@ -343,6 +380,7 @@ async def actualizar_usuario_api(
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
+    # Reemplazar imagen
     if imagen:
         extension = imagen.filename.split(".")[-1]
         filename = f"{uuid.uuid4()}.{extension}"
@@ -352,6 +390,7 @@ async def actualizar_usuario_api(
             shutil.copyfileobj(imagen.file, buffer)
         usuario.imagen = filename
 
+    # Reemplazar campos si fueron enviados
     if nombre is not None:
         usuario.nombre = nombre
     if correo is not None:
@@ -365,6 +404,8 @@ async def actualizar_usuario_api(
     db.refresh(usuario)
     return usuario
 
+
+# Eliminar usuario desde API
 @router.delete("/api/{usuario_id}")
 def eliminar_usuario_api(usuario_id: int, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
@@ -382,7 +423,8 @@ def eliminar_usuario_api(usuario_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"mensaje": "Usuario eliminado correctamente"}
 
-# Reactivar usuario inactivo (API)
+
+# Reactivar usuario desde API
 @router.put("/api/reactivar/{usuario_id}", response_model=UsuarioOut)
 def reactivar_usuario_api(usuario_id: int, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
@@ -398,9 +440,11 @@ def reactivar_usuario_api(usuario_id: int, db: Session = Depends(get_db)):
     db.refresh(usuario)
     return usuario
 
-# Subir imagen para un usuario (API)
+
+# Subir imagen desde API
 @router.post("/api/{usuario_id}/imagen", response_model=UsuarioOut)
 def subir_imagen_usuario_api(usuario_id: int, archivo: UploadFile = File(...), db: Session = Depends(get_db)):
+    # Verificar que el archivo sea una imagen
     if not archivo.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="El archivo debe ser una imagen")
 

@@ -6,95 +6,106 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+
     <div class="container">
+
+        <!-- Encabezado principal de la página -->
         <div class="welcome-header">
-            <h1> Mi Tienda - Sistema de Gestión</h1>
+            <h1>Mi Tienda - Sistema de Gestión</h1>
             <p class="welcome-text">
-                Sistema completo para la gestión de inventario, proveedores, usuarios y más.
-                Selecciona una sección para comenzar.
+                Sistema para gestionar productos, proveedores, usuarios y más.
+                Elige una opción para empezar.
             </p>
         </div>
-        
+
+        <!-- Menú principal con accesos a cada módulo -->
         <div class="menu-grid">
+
+            <!-- Sección de productos -->
             <a href="/productos/opciones" class="menu-card">
                 <div class="menu-icon">📦</div>
                 <div class="menu-title">Productos</div>
-                <div class="menu-desc">Gestión completa de inventario de productos</div>
-                <div class="menu-stats">
-                </div>
+                <div class="menu-desc">Gestión del inventario</div>
             </a>
-            
+
+            <!-- Sección de proveedores -->
             <a href="/proveedores/opciones" class="menu-card">
                 <div class="menu-icon">🚚</div>
                 <div class="menu-title">Proveedores</div>
-                <div class="menu-desc">Administración de proveedores y contactos</div>
-                <div class="menu-stats">
-                </div>
+                <div class="menu-desc">Administración de proveedores</div>
             </a>
-            
+
+            <!-- Sección de categorías -->
             <a href="/categorias/opciones" class="menu-card">
                 <div class="menu-icon">🏷️</div>
                 <div class="menu-title">Categorías</div>
-                <div class="menu-desc">Clasificación y organización de productos</div>
-                <div class="menu-stats">
-                </div>
+                <div class="menu-desc">Organización de productos</div>
             </a>
-            
+
+            <!-- Sección de usuarios -->
             <a href="/usuarios/opciones" class="menu-card">
                 <div class="menu-icon">👥</div>
                 <div class="menu-title">Usuarios</div>
-                <div class="menu-desc">Administración de usuarios del sistema</div>
-                <div class="menu-stats">
-                </div>
+                <div class="menu-desc">Gestión de usuarios</div>
             </a>
-            
+
+            <!-- Sección de API externa -->
             <a href="/externos/opciones" class="menu-card">
                 <div class="menu-icon">🌍</div>
                 <div class="menu-title">API Externa</div>
-                <div class="menu-desc">Conexión con Open Food Facts API</div>
-                <div class="menu-stats">
-                </div>
+                <div class="menu-desc">Consulta a Open Food Facts</div>
             </a>
-            
+
+            <!-- Enlace a la documentación de FastAPI -->
             <a href="/docs" class="menu-card">
                 <div class="menu-icon">📚</div>
                 <div class="menu-title">Documentación</div>
-                <div class="menu-desc">Guías y documentación del sistema</div>
-                <div class="menu-stats">
-                </div>
+                <div class="menu-desc">Documentación del sistema</div>
             </a>
         </div>
-        
+
+        <!-- Resumen general del sistema -->
         <div class="quick-stats mt-30">
             <div class="stats-title">Resumen del Sistema</div>
+
             <div class="stats-grid">
+
+                <!-- Cantidad de módulos -->
                 <div class="stat-card stat-system">
                     <div class="stat-icon">⚙️</div>
                     <div class="stat-text">6 Módulos</div>
-                    <small class="text-muted">Funcionalidades completas</small>
+                    <small class="text-muted">Funciones completas</small>
                 </div>
+
+                <!-- Diseño responsive -->
                 <div class="stat-card stat-design">
                     <div class="stat-icon">🎨</div>
                     <div class="stat-text">Diseño Responsive</div>
-                    <small class="text-muted">Adapta a cualquier dispositivo</small>
+                    <small class="text-muted">Compatible con móviles</small>
                 </div>
+
+                <!-- API conectada -->
                 <div class="stat-card stat-api">
                     <div class="stat-icon">🔌</div>
                     <div class="stat-text">API Integrada</div>
                     <small class="text-muted">Open Food Facts</small>
                 </div>
+
             </div>
         </div>
-        
+
+        <!-- Información del pie de página -->
         <div class="footer-info mt-30">
             <div class="footer-text">
-                <strong>Sistema de Gestión Comercial</strong> • Versión 1.0 • 
-                <span class="text-muted">Desarrollado con FastAPI y Python</span>
+                <strong>Sistema de Gestión Comercial</strong> • Versión 1.0 •
+                <span class="text-muted">Desarrollado con FastAPI</span>
             </div>
         </div>
+
     </div>
 
-{% include 'footer.html' %}
+    <!-- Incluye un archivo de footer separado -->
+    {% include 'footer.html' %}
 
 </body>
 </html>

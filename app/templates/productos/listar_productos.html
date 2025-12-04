@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Productos</title>
+
+    <!-- Enlace al archivo de estilos CSS -->
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+
     <div class="container">
+        <!-- Título principal -->
         <h1>📋 Lista de Productos Activos</h1>
         
         {% if mensaje %}
+        <!-- Si existe un mensaje desde el backend, se muestra aquí -->
         <div class="message message-success">
             ✅ {{ mensaje }}
         </div>
@@ -17,12 +22,18 @@
         
         <div class="text-center mb-30">
             <div class="btn-group">
+
+                <!-- Botón para crear un nuevo producto -->
                 <a href="/productos/crear_form" class="btn btn-primary">
                      Nuevo Producto
                 </a>
+
+                <!-- Botón para volver a la página de opciones -->
                 <a href="/productos/opciones" class="btn btn-secondary">
                      Volver a Opciones
                 </a>
+
+                <!-- Botón para ver los productos inactivos -->
                 <a href="/productos/inactivos_form" class="btn btn-warning">
                      Ver Inactivos
                 </a>
@@ -30,8 +41,11 @@
         </div>
         
         {% if productos %}
+        <!-- Si existen productos activos, se muestra la tabla -->
         <div class="table-container">
             <table class="data-table">
+
+                <!-- Encabezados de la tabla -->
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -45,21 +59,39 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
+
                 <tbody>
+                    <!-- Ciclo que recorre cada producto enviado desde el backend -->
                     {% for p in productos %}
                     <tr>
+
+                        <!-- ID del producto -->
                         <td><strong>{{ p.id }}</strong></td>
+
+                        <!-- Nombre del producto y el ID del usuario creador -->
                         <td>
                             <div class="product-name">{{ p.nombre }}</div>
                             <small class="text-muted">ID Usuario: {{ p.usuario_id }}</small>
                         </td>
+
+                        <!-- Precio formateado con dos decimales -->
                         <td class="text-right">${{ "%.2f"|format(p.precio) }}</td>
+
+                        <!-- Cantidad con estilo especial -->
                         <td class="text-center">
                             <span class="quantity-badge">{{ p.cantidad }}</span>
                         </td>
+
+                        <!-- Ciudad -->
                         <td>{{ p.ciudad }}</td>
+
+                        <!-- ID de la categoría -->
                         <td>{{ p.categoria_id }}</td>
+
+                        <!-- ID del proveedor -->
                         <td>{{ p.proveedor_id }}</td>
+
+                        <!-- Muestra la imagen si existe -->
                         <td class="text-center">
                             {% if p.imagen %}
                             <img src="/static/images/{{ p.imagen }}" 
@@ -69,59 +101,86 @@
                             <span class="text-muted">Sin imagen</span>
                             {% endif %}
                         </td>
+
+                        <!-- Botones de acciones (Ver, Editar, Eliminar) -->
                         <td>
                             <div class="btn-group-vertical">
+
+                                <!-- Editar producto -->
                                 <a href="/productos/actualizar_form?id={{ p.id }}" 
                                    class="btn btn-warning btn-small">
                                      Editar
                                 </a>
+
+                                <!-- Ver detalles del producto -->
                                 <a href="/productos/buscar_form?id={{ p.id }}" 
                                    class="btn btn-info btn-small">
                                      Ver
                                 </a>
+
+                                <!-- Eliminar producto -->
                                 <a href="/productos/eliminar_form?id={{ p.id }}" 
                                    class="btn btn-danger btn-small">
                                      Eliminar
                                 </a>
                             </div>
                         </td>
+
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
         
+        <!-- Cuadro de resumen del inventario -->
         <div class="summary-box mt-30">
             <div class="summary-title">Resumen del Inventario</div>
             <div class="summary-content">
                 <div class="summary-stats">
+
+                    <!-- Cantidad total de productos -->
                     <div class="stat-item">
                         <div class="stat-label">Total Productos</div>
                         <div class="stat-value">{{ productos|length }}</div>
                     </div>
+
+                    <!-- Suma total del valor de inventario -->
                     <div class="stat-item">
                         <div class="stat-label">Valor Total</div>
-                        <div class="stat-value">${{ "%.2f"|format(productos|sum(attribute='precio')) }}</div>
+                        <div class="stat-value">
+                            ${{ "%.2f"|format(productos|sum(attribute='precio')) }}
+                        </div>
                     </div>
+
+                    <!-- Suma total de las cantidades -->
                     <div class="stat-item">
                         <div class="stat-label">Inventario Total</div>
                         <div class="stat-value">{{ productos|sum(attribute='cantidad') }}</div>
                     </div>
+
                 </div>
             </div>
         </div>
+
         {% else %}
+        <!-- Si NO hay productos activos, se muestra este aviso -->
         <div class="message message-info">
+
             <div class="message-icon">📭</div>
+
             <div class="message-content">
                 <h3>No hay productos activos</h3>
                 <p>Comienza agregando tu primer producto al inventario.</p>
+
+                <!-- Botón para crear el primer producto -->
                 <a href="/productos/crear_form" class="btn btn-primary mt-20">
                      Crear Primer Producto
                 </a>
             </div>
+
         </div>
         {% endif %}
     </div>
+
 </body>
 </html>

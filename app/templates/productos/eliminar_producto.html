@@ -7,6 +7,8 @@
 </head>
 <body>
     <div class="container form-container">
+
+        <!-- Tarjeta de advertencia que explica lo que significa eliminar -->
         <div class="warning-card">
             <div class="warning-icon">⚠️</div>
             <h1>Eliminar Producto</h1>
@@ -16,22 +18,35 @@
             </p>
         </div>
         
+        <!-- Mensaje dinámico que puede ser de error o éxito -->
         {% if mensaje %}
-        <div class="message message-success">
-            ✅ {{ mensaje }}
+        <div class="message {% if 'No se puede' in mensaje or 'no encontrado' in mensaje %}message-error{% else %}message-success{% endif %}">
+            
+            <!-- Cambia el ícono dependiendo de si es error o éxito -->
+            {% if 'No se puede' in mensaje or 'no encontrado' in mensaje %}
+                ⚠️
+            {% else %}
+                ✅
+            {% endif %} 
+            
+            {{ mensaje }}
         </div>
         {% endif %}
         
+        <!-- Formulario para digitar el ID del producto a eliminar -->
         <div class="search-box">
             <form action="/productos/eliminar_form" method="post">
+
+                <!-- Campo para ingresar ID -->
                 <div class="form-field">
-                    <label class="form-label">Ingrese ID del producto a eliminar:</label>
+                    <label class="form-label">ID del Producto:</label>
                     <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
                 </div>
                 
+                <!-- Botón de eliminar -->
                 <div class="text-center mt-20">
                     <button type="submit" class="btn btn-danger btn-large">
-                         Eliminar Producto
+                        🗑️ Eliminar Producto
                     </button>
                 </div>
             </form>
@@ -39,6 +54,7 @@
         
         <hr class="my-30">
         
+        <!-- Botón para regresar a opciones -->
         <div class="text-center">
             <a href="/productos/opciones" class="btn btn-secondary">
                 ← Volver a Opciones

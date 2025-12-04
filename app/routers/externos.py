@@ -7,28 +7,44 @@ from app.database import get_db
 from app import models
 from typing import Optional
 
+# Rutas relacionadas con APIs o datos externos
 router = APIRouter(prefix="/externos", tags=["Externos"])
+
+# Carpeta donde están las plantillas HTML
 templates = Jinja2Templates(directory="app/templates")
 
-# ========== RUTAS HTML ==========
+
+#                SECCIÓN DE PÁGINAS HTML
+
 
 @router.get("/opciones", response_class=HTMLResponse)
 async def opciones_externos(request: Request):
+    """
+    Página principal con las opciones relacionadas a productos externos.
+    """
     return templates.TemplateResponse("externos/opciones.html", {"request": request})
+
 
 @router.get("/buscar_form", response_class=HTMLResponse)
 async def buscar_externo_form(request: Request):
+    """
+    Muestra un formulario donde el usuario escribe qué quiere buscar.
+    """
     return templates.TemplateResponse("externos/buscar_externo.html", {"request": request})
+
 
 @router.post("/buscar_form", response_class=HTMLResponse)
 async def buscar_externo_post(
     request: Request,
-    busqueda: str = Form(""),  # Término de búsqueda
-    limite: int = Form(10),    # Límite de resultados
+    busqueda: str = Form(""),   # Palabra clave que escribe el usuario
+    limite: int = Form(10),     # Cuántos resultados quiere ver
     db: Session = Depends(get_db)
 ):
+    """
+    Procesa el formulario de búsqueda y muestra los productos encontrados.
+    """
     productos = obtener_productos_externos_api(busqueda, limite, db)
-    
+
     return templates.TemplateResponse("externos/buscar_externo.html", {
         "request": request,
         "productos": productos.get("datos", []),
@@ -36,90 +52,94 @@ async def buscar_externo_post(
         "busqueda": busqueda
     })
 
-# ========== RUTAS API MEJORADAS ==========
+
+#                  RUTAS API (JSON) OPTIMIZADAS
 
 @router.get("/productos_ext")
 def obtener_productos_externos(
-    busqueda: Optional[str] = Query(None, description="Término de búsqueda"),
-    limite: int = Query(10, description="Número máximo de resultados"),
-    categoria: Optional[str] = Query(None, description="Filtrar por categoría"),
-    pais: Optional[str] = Query(None, description="Filtrar por país"),
+    busqueda: Optional[str] = Query(None),
+    limite: int = Query(10),
+    categoria: Optional[str] = Query(None),
+    pais: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
     """
-    Consulta productos desde Open Food Facts.
-    Parámetros:
-    - busqueda: Término para buscar (ej: "chocolate")
-    - limite: Número máximo de resultados (default: 10)
-    - categoria: Filtrar por categoría (ej: "snacks")
-    - pais: Filtrar por país (ej: "france")
+    Consulta productos en la API de Open Food Facts con filtros opcionales.
+    Permite buscar por nombre, categoría, país y limitar resultados.
     """
-    
+
+    # URL base de la API externa
     url = "https://world.openfoodfacts.org/cgi/search.pl"
+
+    # Parámetros de búsqueda
     params = {
-        "search_terms": busqueda if busqueda else "",
+        "search_terms": busqueda or "",
         "json": 1,
         "page_size": limite,
         "action": "process"
     }
-    
-    # Agregar filtros si existen
+
+    # Filtros opcionales
     if categoria:
         params["tag_0"] = f"categories:{categoria}"
     if pais:
         params["tag_1"] = f"countries:{pais}"
 
+    # Identificación de la app para la API
     headers = {
         "User-Agent": "ProyectoIntegradorFastAPI/1.0 (https://openai.com)"
     }
 
     try:
+        # Llamado a la API externa
         response = requests.get(url, params=params, headers=headers, timeout=10)
         response.raise_for_status()
         data = response.json()
 
         productos_procesados = []
         productos_guardados = 0
-        
+
+        # Recorremos cada producto devuelto por la API
         for p in data.get("products", []):
-            # Extraer datos con validaciones
+
+            # Nombre del producto válido
             nombre = p.get("product_name", p.get("product_name_es", "Desconocido"))
-            if nombre == "Desconocido" or not nombre:
-                continue  # Saltar productos sin nombre
-            
-            # Extraer categorías
-            categorias = p.get("categories", "").split(",") if p.get("categories") else []
+            if not nombre or nombre == "Desconocido":
+                continue
+
+            # Categoría principal (texto limpio)
+            categorias = p.get("categories", "").split(",")
             categoria_principal = categorias[0].strip() if categorias else "Sin categoría"
-            
-            # Extraer país
-            paises = p.get("countries", "").split(",") if p.get("countries") else []
+
+            # País principal
+            paises = p.get("countries", "").split(",")
             pais_principal = paises[0].strip() if paises else "Desconocido"
-            
-            # Extraer imagen
+
+            # Imagen del producto
             imagen_url = p.get("image_url", p.get("image_small_url", ""))
-            
-            # Extraer precio
+
+            # Precio, si la API lo incluye
             precio = p.get("price", p.get("product_price", 0.0))
-            if precio and isinstance(precio, str):
+            if isinstance(precio, str):
                 try:
                     precio = float(precio.replace(",", "."))
                 except:
                     precio = 0.0
-            
-            # Verificar si el producto ya existe
+
+            # Verifica si ya existe en la base de datos
             existe = db.query(models.Producto).filter(
                 models.Producto.nombre.ilike(f"%{nombre[:50]}%")
             ).first()
-            
-            # Guardar en BD si no existe
+
+            # Si no existe, lo guarda
             if not existe:
                 try:
                     nuevo_producto = models.Producto(
-                        nombre=nombre[:100],  # Limitar longitud
+                        nombre=nombre[:100],
                         precio=precio,
                         ciudad=pais_principal[:50],
                         fuente="Open Food Facts",
-                        imagen=imagen_url[:200] if imagen_url else None,
+                        imagen=imagen_url[:200],
                         categoria_externa=categoria_principal[:100],
                         estado="activo"
                     )
@@ -129,6 +149,7 @@ def obtener_productos_externos(
                     print(f"Error guardando producto {nombre}: {e}")
                     continue
 
+            # Agregar a la lista de productos a mostrar
             productos_procesados.append({
                 "id": len(productos_procesados) + 1,
                 "nombre": nombre,
@@ -151,67 +172,72 @@ def obtener_productos_externos(
 
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=400, detail=f"Error al consultar API externa: {str(e)}")
+
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
 
-# Función auxiliar para HTML
+
+#     FUNCIÓN AUXILIAR PARA USO INTERNO EN LAS PÁGINAS HTML
+
+
 def obtener_productos_externos_api(busqueda: str = "", limite: int = 10, db: Session = None):
-    """Versión simplificada para HTML"""
+    """
+    Versión simplificada para uso en las plantillas HTML.
+    Devuelve solo datos necesarios para mostrarlos en la interfaz.
+    """
     try:
         url = "https://world.openfoodfacts.org/cgi/search.pl"
-        params = {
+        response = requests.get(url, params={
             "search_terms": busqueda,
             "json": 1,
             "page_size": limite,
             "action": "process"
-        }
-        
-        headers = {"User-Agent": "ProyectoIntegradorFastAPI/1.0"}
-        response = requests.get(url, params=params, headers=headers, timeout=10)
+        }, timeout=10)
+
         data = response.json()
-        
         productos = []
+
         for p in data.get("products", []):
-            nombre = p.get("product_name", p.get("product_name_es", "Desconocido"))
+            nombre = p.get("product_name", "Desconocido")
             if nombre == "Desconocido":
                 continue
-                
+
             productos.append({
                 "nombre": nombre[:50],
-                "categoria": p.get("categories", "Sin categoría").split(",")[0].strip()[:50],
-                "pais": p.get("countries", "Desconocido").split(",")[0].strip()[:50],
+                "categoria": p.get("categories", "Sin categoría").split(",")[0].strip(),
+                "pais": p.get("countries", "Desconocido").split(",")[0].strip(),
                 "precio": p.get("price", 0.0),
-                "marca": p.get("brands", "Desconocido")[:50],
+                "marca": p.get("brands", "Desconocido"),
                 "imagen": p.get("image_small_url", "")
             })
-        
+
         return {
             "mensaje": f"Se encontraron {len(productos)} productos",
             "datos": productos
         }
-        
+
     except Exception as e:
         return {"mensaje": f"Error: {str(e)}", "datos": []}
 
-# Nueva ruta: Buscar productos por código de barras
+
+#         CONSULTA DE PRODUCTOS POR CÓDIGO DE BARRAS
+
+
 @router.get("/producto/{codigo_barras}")
 def obtener_producto_por_codigo(codigo_barras: str):
     """
-    Obtiene un producto específico por código de barras desde Open Food Facts
+    Busca un producto específico utilizando su código de barras.
     """
     url = f"https://world.openfoodfacts.org/api/v0/product/{codigo_barras}.json"
-    
+
     try:
         response = requests.get(url, timeout=10)
-        if response.status_code == 404:
-            raise HTTPException(status_code=404, detail="Producto no encontrado")
-        
         data = response.json().get("product", {})
-        
+
         if not data:
             raise HTTPException(status_code=404, detail="Producto no encontrado")
-        
+
         return {
             "nombre": data.get("product_name", "Desconocido"),
             "marca": data.get("brands", "Desconocido"),
@@ -221,6 +247,6 @@ def obtener_producto_por_codigo(codigo_barras: str):
             "nutri_score": data.get("nutriscore_grade", "Desconocido"),
             "url": data.get("url", "")
         }
-        
+
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=400, detail=f"Error al consultar: {str(e)}")

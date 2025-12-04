@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Actualizar Producto</title>
+
+    <!-- Hoja de estilos principal del proyecto -->
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
     <div class="container form-container">
         <h1>Actualizar Producto</h1>
         
+        <!-- Si el backend envía un mensaje (por ejemplo: error o no encontrado), se muestra aquí -->
         {% if mensaje %}
         <div class="message message-error">
             {{ mensaje }}
         </div>
         {% endif %}
         
+        <!-- Formulario para pedir el ID del producto que se quiere actualizar -->
         <div class="search-box">
             <form action="/productos/actualizar_form" method="post">
                 <div class="form-field">
+                    <!-- Etiqueta del campo -->
                     <label class="form-label">Ingrese ID del producto a actualizar:</label>
+
+                    <!-- Aquí el usuario escribe el número del producto -->
                     <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
                 </div>
                 
+                <!-- Botón para enviar el ID y buscar el producto -->
                 <div class="text-center mt-20">
                     <button type="submit" class="btn btn-warning btn-large">
                          Buscar Producto
@@ -32,6 +40,7 @@
         
         <hr class="my-30">
         
+        <!-- Botón para volver al menú anterior -->
         <div class="text-center">
             <a href="/productos/opciones" class="btn btn-secondary">
                 ← Volver a Opciones

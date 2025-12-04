@@ -3,35 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Buscar Categoría</title>
+
+    <!-- Archivo de estilos general -->
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
     <div class="container form-container">
+
+        <!-- Título principal -->
         <h1>🔍 Buscar Categoría</h1>
         
+        <!-- Formulario para buscar categoría por ID -->
         <div class="search-box">
             <form action="/categorias/buscar" method="post">
+                
+                <!-- Campo para ingresar el ID -->
                 <div class="form-field">
                     <label class="form-label">ID de la categoría:</label>
                     <input type="number" class="form-input" name="id" placeholder="Ej: 1" min="1" required>
                 </div>
                 
+                <!-- Botón para enviar el formulario -->
                 <div class="text-center mt-20">
                     <button type="submit" class="btn btn-primary btn-large">
                         🔍 Buscar Categoría
                     </button>
                 </div>
+
             </form>
         </div>
         
+        <!-- Si existe la categoría buscada, se muestra esta tarjeta -->
         {% if categoria %}
         <div class="data-card mt-30">
+
+            <!-- Encabezado de la tarjeta con nombre e ID -->
             <div class="card-header">
                 <div class="card-title">{{ categoria.nombre }}</div>
                 <div class="card-id">ID: {{ categoria.id }}</div>
             </div>
             
+            <!-- Detalles de la categoría -->
             <div class="card-details">
+
                 <div class="detail-item">
                     <div class="detail-label">ID</div>
                     <div class="detail-value">{{ categoria.id }}</div>
@@ -41,8 +55,10 @@
                     <div class="detail-label">Nombre</div>
                     <div class="detail-value">{{ categoria.nombre }}</div>
                 </div>
+
             </div>
             
+            <!-- Botones de acciones: editar o eliminar -->
             <div class="btn-group mt-30">
                 <a href="/categorias/actualizar_form?id={{ categoria.id }}" 
                    class="btn btn-warning">
@@ -54,16 +70,19 @@
                     🗑️ Eliminar Categoría
                 </a>
             </div>
+
         </div>
         {% endif %}
         
         <hr class="my-30">
         
+        <!-- Botón para regresar al menú de opciones -->
         <div class="text-center">
             <a href="/categorias/opciones" class="btn btn-secondary">
                 ← Volver a Opciones
             </a>
         </div>
+
     </div>
 </body>
 </html>
